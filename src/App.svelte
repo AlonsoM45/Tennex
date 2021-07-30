@@ -2,11 +2,17 @@
 	import Task from './Task.svelte';
 </script>
 
-<p>This is a paragraph.</p>
-<Task/>
+<div id="app-container">
+	<Task name={"Dummy task"} description={"Dummy description"} hasChild={true}/>
+</div>
 
 <style>
-	p {
-		font-size: 24px;
+	#app-container {
+		width: 100%;
+		height: 100%;
+		background-color: #1b101b;
+		
+		display: flex;
+		flex-wrap: wrap;
 	}
 </style>

@@ -1,28 +1,26 @@
 <script>
     export let name;
-    export let description;
-    export let hasChild;
+    export let levels;
 </script>
 
 <div class="task-card">
     <b class="task-title">{name}</b>
-    <p class="task-body">{description}</p>
     <div class="task-space">
-        {#if hasChild}
-    	    <svelte:self name={"Dummy task"} description={"Dummy description"} hasChild={false}/>
+        {#if levels > 0}
+    	    <svelte:self name={"Dummy task"} description={"Dummy description"} levels={levels-1}/>
+    	    <svelte:self name={"Dummy task"} description={"Dummy description"} levels={levels-1}/>
         {/if}
     </div>
 </div>
 
 <style>
     .task-title {
-        width: 100%;
-        border-bottom: 2px solid #b2e4d1;
-        padding-bottom: 3px;
+        font-size: 14px;
     }
 
-    .task-body {
-        margin-top: 10px;
+    .task-space {
+        display: flex;
+        flex-wrap: wrap;
     }
 
     .task-card {
@@ -32,17 +30,12 @@
         border: 2px solid #864786;
         border-radius: 10px;
 
-        min-height: 100px;
-        max-height: 150px;
-        min-width: 300px;
+        min-height: 50px;
+        min-width: 100px;
 
         background-color: #241e30;
 
         display: flex;
         flex-direction: column;
-    }
-
-    * {
-        color: #b2e4d1;
     }
 </style>

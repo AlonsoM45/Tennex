@@ -2,7 +2,7 @@
 	import Task from './Task.svelte';
 </script>
 
-<Task name={"Dummy task"} levels={9}/>
+<Task name={"Dummy task"}/>
 
 <style>
 </style>

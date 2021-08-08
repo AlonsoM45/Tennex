@@ -1,4 +1,5 @@
 <script>
+	import { expand } from './transitions';
 	import TopPanel from './TopPanel.svelte';
 	import Task from './Task.svelte';
 	import { allTasks, taskCount } from './stores';
@@ -63,8 +64,11 @@
 </script>
 
 {#if isTopPanelOpen}
-	<TopPanel taskId={selectedTaskId} on:hide={closeTaskDetails}/>
+	<div style="height: 200px;" in:expand={{totalHeight: 200}} out:expand={{totalHeight: 200}}>
+		<TopPanel isOpen={isTopPanelOpen} taskId={selectedTaskId} on:hide={closeTaskDetails}/>
+	</div>
 {/if}
+
 <div class="task-panel">
 	<Task id={0} on:editTask={openTaskDetails}/>
 </div>

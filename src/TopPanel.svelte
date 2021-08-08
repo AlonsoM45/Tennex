@@ -1,6 +1,6 @@
 <script>
     import { createEventDispatcher } from 'svelte';
-import { allTasks } from './stores';
+    import { allTasks } from './stores';
     
     const dispatch = createEventDispatcher();
     
@@ -22,7 +22,7 @@ import { allTasks } from './stores';
 
 <style>
     .panel {
-        height: 200px;
+        height: 100%;
         width: 100%;
         border-bottom: 4px solid #c567c5;
     }

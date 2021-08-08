@@ -24,6 +24,7 @@
             name: "New Task",
             children: [],
             isExpanded: true,
+            details: "",
         };
         
         // Update global tasks

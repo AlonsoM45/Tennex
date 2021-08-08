@@ -1,50 +1,84 @@
 <script>
-    export let name;
+	import { allTasks, taskCount } from './stores.js';
+    import { createEventDispatcher } from 'svelte';
+    const dispatch = createEventDispatcher();
+
+    export let id;
     export let depth;
 
-    let isExpanded = true;
-    let tasks = [];
+    $: name = $allTasks[id].name;
+    $: children = $allTasks[id].children;
+    $: isExpanded = $allTasks[id].isExpanded;
 
     if (!depth){
         depth = 0;
     }
 
     function toggleExpansion(){
-        isExpanded = !isExpanded;
+        $allTasks[id].isExpanded = !isExpanded;
     }
 
     function addTask(){
-        tasks.push("New Task");
-        tasks = tasks;
+        let newTask = {
+            id: $taskCount,
+            name: "New Task",
+            children: [],
+            isExpanded: true,
+        };
+        
+        // Update global tasks
+        taskCount.update(n => n + 1); // ToDo: Check synchronization issues
+        $allTasks = [...$allTasks, newTask];
+
+        // Update children
+        $allTasks[id].children.push(newTask);
         isExpanded = true;
+    }
+
+    function editTask(){
+		dispatch('editTask', {
+			id: id
+		});
+    }
+
+    function forwardEditTask(editTaskEvent) {
+		dispatch('editTask', editTaskEvent.detail);
+	}
+
+    function changeName(event){
+        $allTasks[id].name = event.target.value;
     }
 </script>
 
+<!-- ToDo: Add possibility to "delete" and "rescue" tasks (and permanently delete, also) -->
 <div class="task-card {depth % 2 == 0 ? 'even-depth-background' : 'odd-depth-background'}">
     <div class="task-header">
-        {#if tasks.length > 0} <!-- Hide expand/minimize if there are no tasks-->
+        {#if children.length > 0} <!-- Hide expand/minimize if there are no tasks-->
             {#if isExpanded}
-                <img class="task-header-button rotate-when-clicked" on:click={toggleExpansion} src="../assets/chevron-up-white.png" alt="Minimize"/>
+                <img class="task-header-button rotate-when-clicked" on:click={toggleExpansion} src="../assets/chevron-up-white.png" alt="Minimize Task"/>
             {:else}
-                <img class="task-header-button rotate-when-clicked" on:click={toggleExpansion} src="../assets/chevron-down-white.png" alt="Expand"/>
+                <img class="task-header-button rotate-when-clicked" on:click={toggleExpansion} src="../assets/chevron-down-white.png" alt="Expand Task"/>
             {/if}
         {/if}
 
         <img class="task-header-button skew-when-clicked" on:click={addTask} src="../assets/plus-white.png" alt="Add New Task"/>
+        <img class="task-header-button skew-when-clicked" on:click={editTask} src="../assets/pencil-white.png" alt="Edit Task"/>
+        <b>{id}</b> <!-- ToDo: Remove this-->
     </div>
     
     <!-- ToDo: Make this (and other fields) editable -->
     <input
         class="task-title {depth % 2 == 0 ? 'odd-depth-background' : 'even-depth-background'}"
         value={name}
+        on:input={changeName}
         onkeypress="this.style.width = (this.value.length + 2) + 'ch';"
     />
 
     {#if isExpanded}
         <div class="task-space">
-            {#each tasks as task}
+            {#each children as childTask}
                 <!-- ToDo: Minimized by parent should be replaced with a call to something that changes "isMinimized" inside the child-->
-                <svelte:self name={task} depth={depth + 1} />
+                <svelte:self id={childTask.id} depth={depth + 1} on:editTask={forwardEditTask}/>
             {/each}
         </div>
     {/if}

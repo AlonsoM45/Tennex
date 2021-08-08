@@ -31,7 +31,7 @@
         $allTasks = [...$allTasks, newTask];
 
         // Update children
-        $allTasks[id].children.push(newTask);
+        $allTasks[id].children.push(newTask.id);
         isExpanded = true;
     }
 
@@ -76,9 +76,9 @@
 
     {#if isExpanded}
         <div class="task-space">
-            {#each children as childTask}
+            {#each children as childTaskId}
                 <!-- ToDo: Minimized by parent should be replaced with a call to something that changes "isMinimized" inside the child-->
-                <svelte:self id={childTask.id} depth={depth + 1} on:editTask={forwardEditTask}/>
+                <svelte:self id={childTaskId} depth={depth + 1} on:editTask={forwardEditTask}/>
             {/each}
         </div>
     {/if}

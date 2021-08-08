@@ -13,7 +13,7 @@
 		isExpanded: true,
 	};
 
-	$allTasks = [firstTask];
+	allTasks.set([firstTask]);
 	
 	function openTaskDetails(event){
 		selectedTaskId = event.detail.id;

@@ -1,10 +1,8 @@
 <script>
     export let name;
     export let depth;
-    export let minimizedByParent;
 
     let isExpanded = true;
-    let shouldMinimizeChildren = false;
     let tasks = [];
     if (!depth){
         depth = 0;
@@ -14,61 +12,46 @@
         isExpanded = !isExpanded;
     }
 
-    function toggleChildrenMinimization(){
-        shouldMinimizeChildren = !shouldMinimizeChildren;
-    }
-
     function addTask(){
         tasks.push("New Task");
         tasks = tasks;
+        isExpanded = true;
     }
 </script>
 
 <div class="task-card {depth % 2 == 0 ? 'even-depth-background' : 'odd-depth-background'}">
     <div class="task-header">
-        {#if !minimizedByParent}
-        <div class="task-header-button" on:click={toggleExpansion}>
+        {#if tasks.length > 0} <!-- Hide expand/minimize if there are no tasks-->
             {#if isExpanded}
-            - <!-- ToDo: Fix this hideous "minus" and "plus" symbols -->
+                <img class="task-header-button" on:click={toggleExpansion} src="../assets/chevron-up-white.png" alt="Minimize"/>
             {:else}
-            +
-            {/if}
-        </div>
-
-            <!-- ToDo: Better UX for minimization, etc... -->
-            {#if isExpanded && !minimizedByParent}
-            <div class="task-header-button" on:click={toggleChildrenMinimization}>
-                {#if shouldMinimizeChildren}
-                - <!-- ToDo: Fix this hideous "minus" and "plus" symbols -->
-                {:else}
-                +
-                {/if}
-            </div>
+                <img class="task-header-button" on:click={toggleExpansion} src="../assets/chevron-down-white.png" alt="Expand"/>
             {/if}
         {/if}
-    </div>
-    <b class="task-title">{name}</b>
-    {#if isExpanded && !minimizedByParent}
-    <div class="task-space">
-        {#each tasks as task}
-    	    <svelte:self name={task} depth={depth + 1} minimizedByParent={shouldMinimizeChildren}/>
-        {/each}
-    </div>
 
-    <div class="actions-space">
-        <button class="add-task-button" on:click={addTask}>
-            +
-        </button>
+        <img class="task-header-button" on:click={addTask} src="../assets/plus-white.png" alt="Add New Task"/>
     </div>
+    
+
+    <!-- ToDo: Make this (and other fields) editable -->
+    <b class="task-title">{name}</b>
+    
+    {#if isExpanded}
+        <div class="task-space">
+            {#each tasks as task}
+                <!-- ToDo: Minimized by parent should be replaced with a call to something that changes "isMinimized" inside the child-->
+                <svelte:self name={task} depth={depth + 1} />
+            {/each}
+        </div>
     {/if}
 </div>
 
 <style>
     .task-header {
         display: flex;
-        border-top-right-radius: 16px;
+        border-top-right-radius: 14px;
         width: 100%;
-        background-color: #864786;
+        background-color: #c567c5;
         min-height: 18px;
     }
 
@@ -81,18 +64,13 @@
 
     .task-header-button {
         cursor: pointer;
+        margin: 4px;
+        width: 16px;
+        height: 16px;
+    }
 
-        margin: 2px;
-        width: 14px;
-        height: 14px;
-        border-radius: 7px;
-        background-color: white;
-        font-size: 18px;
-
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        color: #864786;
+    .task-header-button:active {
+        transform: rotate(90deg); /* ToDo: Check if I can make this rotate faster */
     }
 
     .task-space {
@@ -100,29 +78,9 @@
         flex-wrap: wrap;
     }
 
-    .actions-space {
-        display: flex;
-        justify-content: flex-end;
-        width: 90%;
-        margin: 5px 5%;
-    }
-
-    .add-task-button {
-        cursor: pointer;
-        border: 1px solid #864786;
-        width: 22px;
-        height: 22px;
-        font-size: 20px;
-        padding: 0px;
-    }
-
     .task-card {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-
         margin: 10px;
-        border: 1.5px solid #864786;
+        border: 1.5px solid #c567c5;
         border-top-right-radius: 16px;
         border-bottom-right-radius: 16px;
         border-bottom-left-radius: 16px;
@@ -134,6 +92,7 @@
 
         display: inline-flex;
         flex-direction: column;
+        padding-bottom: 5px;
     }
 
     .odd-depth-background {

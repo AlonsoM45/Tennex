@@ -70,6 +70,13 @@
         font-weight: bold;
     }
 
+    .task-title:focus {
+        box-shadow: 0 0 4px #c567c5;
+        border: 1px solid #c567c5;
+        box-sizing: border-box;
+        outline: none;
+    }
+
     .task-header-button {
         cursor: pointer;
         margin: 4px;

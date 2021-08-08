@@ -4,6 +4,7 @@
 
     let isExpanded = true;
     let tasks = [];
+
     if (!depth){
         depth = 0;
     }
@@ -23,19 +24,22 @@
     <div class="task-header">
         {#if tasks.length > 0} <!-- Hide expand/minimize if there are no tasks-->
             {#if isExpanded}
-                <img class="task-header-button" on:click={toggleExpansion} src="../assets/chevron-up-white.png" alt="Minimize"/>
+                <img class="task-header-button rotate-when-clicked" on:click={toggleExpansion} src="../assets/chevron-up-white.png" alt="Minimize"/>
             {:else}
-                <img class="task-header-button" on:click={toggleExpansion} src="../assets/chevron-down-white.png" alt="Expand"/>
+                <img class="task-header-button rotate-when-clicked" on:click={toggleExpansion} src="../assets/chevron-down-white.png" alt="Expand"/>
             {/if}
         {/if}
 
-        <img class="task-header-button" on:click={addTask} src="../assets/plus-white.png" alt="Add New Task"/>
+        <img class="task-header-button skew-when-clicked" on:click={addTask} src="../assets/plus-white.png" alt="Add New Task"/>
     </div>
     
-
     <!-- ToDo: Make this (and other fields) editable -->
-    <b class="task-title">{name}</b>
-    
+    <input
+        class="task-title {depth % 2 == 0 ? 'odd-depth-background' : 'even-depth-background'}"
+        value={name}
+        onkeypress="this.style.width = (this.value.length + 2) + 'ch';"
+    />
+
     {#if isExpanded}
         <div class="task-space">
             {#each tasks as task}
@@ -56,10 +60,14 @@
     }
 
     .task-title {
-        margin: 5px;
-        margin-bottom: 0px;
+        margin: 10px;
         font-size: 14px;
         align-self: flex-start;
+        min-width: 10ch;
+
+        color: white;
+        border: 0px;
+        font-weight: bold;
     }
 
     .task-header-button {
@@ -69,8 +77,12 @@
         height: 16px;
     }
 
-    .task-header-button:active {
+    .rotate-when-clicked:active {
         transform: rotate(90deg); /* ToDo: Check if I can make this rotate faster */
+    }
+
+    .skew-when-clicked:active {
+        transform: skew(10deg, 5deg);
     }
 
     .task-space {
@@ -96,7 +108,7 @@
     }
 
     .odd-depth-background {
-        background-color: rgb(44, 44, 46)
+        background-color: #2c2c2e
     }
 
     .even-depth-background {

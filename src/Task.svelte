@@ -4,19 +4,19 @@
     const dispatch = createEventDispatcher();
 
     export let id;
-    export let depth;
 
     $: name = $allTasks[id].name;
     $: children = $allTasks[id].children;
     $: isExpanded = $allTasks[id].isExpanded;
     $: isRemoved = $allTasks[id].isRemoved;
-
-    if (!depth){
-        depth = 0;
-    }
+    $: isCompleted = $allTasks[id].isCompleted;
+    $: isExpandable = children.filter(childId => {
+        return !($allTasks[childId].isRemoved);
+    }).length > 0;
 
     function toggleExpansion(){
         $allTasks[id].isExpanded = !isExpanded;
+        // ToDo: Minimize children ?
     }
 
     function addTask(){
@@ -26,6 +26,7 @@
             children: [],
             isExpanded: true,
             isRemoved: false,
+            isCompleted: false,
             details: "",
         };
         
@@ -55,18 +56,20 @@
 
     function removeTask(){
         $allTasks[id].isRemoved = true;
+        // ToDo: Remove children
     }
 
     function completeTask(){
-        // ToDo: Implement
+        $allTasks[id].isCompleted = true;
+        // ToDo: Complete children
     }
 </script>
 
-<!-- ToDo: Add possibility to "delete" and "rescue" tasks (and permanently delete, also) -->
+<!-- ToDo: Add possibility to "rescue" tasks (and permanently delete, also) -->
 {#if !isRemoved}
-<div class="task-card {depth % 2 == 0 ? 'even-depth-background' : 'odd-depth-background'}">
-    <div class="task-header">
-        {#if children.length > 0} <!-- Hide expand/minimize if there are no tasks-->
+<div class="task-card { isCompleted ? 'green-border' : 'violet-border' }">
+    <div class="task-header { isCompleted ? 'green-background' : 'violet-background' }">
+        {#if isExpandable} <!-- Hide expand/minimize if there are no tasks-->
             {#if isExpanded}
                 <img class="task-header-button rotate-when-clicked" on:click={toggleExpansion} src="../assets/chevron-up-white.png" alt="Minimize Task"/>
             {:else}
@@ -80,12 +83,11 @@
         <img class="task-header-button skew-when-clicked" on:click={editTask} src="../assets/pencil-white.png" alt="Edit Task"/>
         <img class="task-header-button skew-when-clicked" on:click={completeTask} src="../assets/check-white.png" alt="Complete Task"/>
         
-        <b>{id}</b> <!-- ToDo: Remove this-->
+        <b>{id}</b>
     </div>
     
-    <!-- ToDo: Make this (and other fields) editable -->
     <input
-        class="task-title purple-focus {depth % 2 == 1 ? 'odd-depth-background' : 'even-depth-background'}"
+        class="task-title purple-focus"
         value={name}
         on:input={changeName}
         onkeypress="this.style.width = (this.value.length + 2) + 'ch';"
@@ -94,8 +96,7 @@
     {#if isExpanded}
         <div class="task-space">
             {#each children as childTaskId}
-                <!-- ToDo: Minimized by parent should be replaced with a call to something that changes "isMinimized" inside the child-->
-                <svelte:self id={childTaskId} depth={depth + 1} on:editTask={forwardEditTask}/>
+                <svelte:self id={childTaskId} on:editTask={forwardEditTask}/>
             {/each}
         </div>
     {/if}
@@ -103,11 +104,18 @@
 {/if}
 
 <style>
+    .violet-background {
+        background-color: #c567c5;
+    }
+
+    .green-background {
+        background-color: #359e6a;
+    }
+
     .task-header {
         display: flex;
         border-top-right-radius: 14px;
         width: 100%;
-        background-color: #c567c5;
         min-height: 18px;
     }
 
@@ -117,6 +125,7 @@
         align-self: flex-start;
         min-width: 10ch;
 
+        background-color: #2c2c2ed0;
         color: white;
         border: 0px;
         font-weight: bold;
@@ -142,9 +151,16 @@
         flex-wrap: wrap;
     }
 
+    .violet-border {
+        border: 1.5px solid #c567c5;
+    }
+
+    .green-border {
+        border: 1.5px solid #359e6a;
+    }
+
     .task-card {
         margin: 10px;
-        border: 1.5px solid #c567c5;
         border-top-right-radius: 16px;
         border-bottom-right-radius: 16px;
         border-bottom-left-radius: 16px;
@@ -157,13 +173,6 @@
         display: inline-flex;
         flex-direction: column;
         padding-bottom: 5px;
-    }
-
-    .odd-depth-background {
-        background-color: #2c2c2e
-    }
-
-    .even-depth-background {
-        background-color: #0d0d1a;
+        background-color: #2c2c2ed0;
     }
 </style>

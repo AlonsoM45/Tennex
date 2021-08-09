@@ -17,6 +17,7 @@
 		children: [],
 		isExpanded: true,
 		isRemoved: false,
+		isCompleted: false,
 		details: "",
 	};
 
@@ -33,10 +34,10 @@
 	}
 
 	fs.readFile(tasksFilename, 'utf-8', (err, data) => {
-		if(err){
+		if (err){
 			console.log(err);
 			alert("An error ocurred reading the file :" + err.message);
-		}else{
+		} else {
 			try{
 				let allData = JSON.parse(data);
 				taskCount.set(allData.length);

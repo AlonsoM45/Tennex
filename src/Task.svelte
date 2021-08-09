@@ -9,6 +9,7 @@
     $: name = $allTasks[id].name;
     $: children = $allTasks[id].children;
     $: isExpanded = $allTasks[id].isExpanded;
+    $: isRemoved = $allTasks[id].isRemoved;
 
     if (!depth){
         depth = 0;
@@ -24,15 +25,16 @@
             name: "New Task",
             children: [],
             isExpanded: true,
+            isRemoved: false,
             details: "",
         };
         
         // Update global tasks
         taskCount.update(n => n + 1); // ToDo: Check synchronization issues
+        $allTasks[id].children.push(newTask.id);
         $allTasks = [...$allTasks, newTask];
 
         // Update children
-        $allTasks[id].children.push(newTask.id);
         isExpanded = true;
     }
 
@@ -48,10 +50,20 @@
 
     function changeName(event){
         $allTasks[id].name = event.target.value;
+        // ToDo: Check that this is changed in the file
+    }
+
+    function removeTask(){
+        $allTasks[id].isRemoved = true;
+    }
+
+    function completeTask(){
+        // ToDo: Implement
     }
 </script>
 
 <!-- ToDo: Add possibility to "delete" and "rescue" tasks (and permanently delete, also) -->
+{#if !isRemoved}
 <div class="task-card {depth % 2 == 0 ? 'even-depth-background' : 'odd-depth-background'}">
     <div class="task-header">
         {#if children.length > 0} <!-- Hide expand/minimize if there are no tasks-->
@@ -60,16 +72,20 @@
             {:else}
                 <img class="task-header-button rotate-when-clicked" on:click={toggleExpansion} src="../assets/chevron-down-white.png" alt="Expand Task"/>
             {/if}
+        {:else}
+            <img class="task-header-button skew-when-clicked" on:click={removeTask} src="../assets/cancel-white.png" alt="Remove Task"/>
         {/if}
 
         <img class="task-header-button skew-when-clicked" on:click={addTask} src="../assets/plus-white.png" alt="Add New Task"/>
         <img class="task-header-button skew-when-clicked" on:click={editTask} src="../assets/pencil-white.png" alt="Edit Task"/>
+        <img class="task-header-button skew-when-clicked" on:click={completeTask} src="../assets/check-white.png" alt="Complete Task"/>
+        
         <b>{id}</b> <!-- ToDo: Remove this-->
     </div>
     
     <!-- ToDo: Make this (and other fields) editable -->
     <input
-        class="task-title {depth % 2 == 0 ? 'odd-depth-background' : 'even-depth-background'}"
+        class="task-title purple-focus {depth % 2 == 1 ? 'odd-depth-background' : 'even-depth-background'}"
         value={name}
         on:input={changeName}
         onkeypress="this.style.width = (this.value.length + 2) + 'ch';"
@@ -84,6 +100,7 @@
         </div>
     {/if}
 </div>
+{/if}
 
 <style>
     .task-header {
@@ -103,13 +120,6 @@
         color: white;
         border: 0px;
         font-weight: bold;
-    }
-
-    .task-title:focus {
-        box-shadow: 0 0 4px #c567c5;
-        border: 1px solid #c567c5;
-        box-sizing: border-box;
-        outline: none;
     }
 
     .task-header-button {

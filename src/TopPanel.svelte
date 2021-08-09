@@ -18,13 +18,22 @@
         
         <b>Editing Task #{taskId} : {selectedTask.name}</b>
     </div>
+
+    <textarea class="purple-focus" placeholder="details" />
 </div>
 
 <style>
+    textarea {
+        margin: 20px;
+        background-color: #2c2c2e;
+        color: white;
+    }
+
     .panel {
         height: 100%;
         width: 100%;
         border-bottom: 4px solid #c567c5;
+        background-color: #0d0d1a;
     }
 
     .panel-header {

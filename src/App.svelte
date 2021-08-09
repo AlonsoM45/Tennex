@@ -6,8 +6,8 @@
 	const {app} = require('electron').remote; // ToDo: This is suppossed to be unsafe, maybe do it with IPC
 	const fs = window.require('fs');
 
-	let tasksFilename = app.getPath('userData') + "/tasks.txt";
-	let oldTasksFilename = app.getPath('userData') + "/old-tasks.txt";
+	let tasksFilename = app.getPath('userData') + "/tasks.json";
+	let oldTasksFilename = app.getPath('userData') + "/old-tasks.json";
 	let isTopPanelOpen = false;
 	let selectedTaskId = 0;
 
@@ -16,6 +16,7 @@
 		name: "First Task",
 		children: [],
 		isExpanded: true,
+		isRemoved: false,
 		details: "",
 	};
 

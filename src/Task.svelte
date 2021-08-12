@@ -16,7 +16,7 @@
 
     function toggleExpansion(){
         $allTasks[id].isExpanded = !isExpanded;
-        // ToDo: Minimize children ?
+        // ToDo: Minimize children [LOW PRIORITY]
     }
 
     function addTask(){
@@ -32,12 +32,17 @@
         };
         
         // Update global tasks
-        taskCount.update(n => n + 1); // ToDo: Check synchronization issues
+        taskCount.update(n => n + 1); // ToDo: Check synchronization issues [LOW PRIORITY]
         $allTasks[id].children.push(newTask.id);
         $allTasks = [...$allTasks, newTask];
 
         // Update children
         isExpanded = true;
+        
+        // Un-complete if necessary
+        if (isCompleted){
+            uncompleteTask(id);
+        }
     }
 
     function editTask(){
@@ -52,12 +57,11 @@
 
     function changeName(event){
         $allTasks[id].name = event.target.value;
-        // ToDo: Check that this is changed in the file
+        // ToDo: Check that this is changed in the file [LOW PRIORITY]
     }
 
     function removeTask(){
         $allTasks[id].isRemoved = true;
-        // ToDo: Remove children
     }
 
     function toggleCompletion(){
@@ -83,7 +87,7 @@
     }
 </script>
 
-<!-- ToDo: Add possibility to "rescue" tasks (and permanently delete, also) -->
+<!-- ToDo: Add possibility to "rescue" tasks (and permanently delete, also) [LOW PRIORITY] -->
 {#if !isRemoved}
 <div class="task-card { isCompleted ? 'green-border' : 'violet-border' }">
     <div class="task-header { isCompleted ? 'green-background' : 'violet-background' }">
@@ -157,7 +161,7 @@
     }
 
     .rotate-when-clicked:active {
-        transform: rotate(90deg); /* ToDo: Check if I can make this rotate faster */
+        transform: rotate(90deg); /* ToDo: Check if I can make this rotate faster [LOW PRIORITY]*/
     }
 
     .skew-when-clicked:active {

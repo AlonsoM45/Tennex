@@ -770,11 +770,11 @@ var app = (function () {
 
     function get_each_context(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[15] = list[i];
+    	child_ctx[19] = list[i];
     	return child_ctx;
     }
 
-    // (66:0) {#if !isRemoved}
+    // (89:0) {#if !isRemoved}
     function create_if_block(ctx) {
     	let div1;
     	let div0;
@@ -790,9 +790,9 @@ var app = (function () {
     	let t3;
     	let b;
     	let t4;
+    	let div0_class_value;
     	let t5;
     	let input;
-    	let input_class_value;
     	let t6;
     	let div1_class_value;
     	let current;
@@ -800,7 +800,7 @@ var app = (function () {
     	let dispose;
 
     	function select_block_type(ctx, dirty) {
-    		if (/*children*/ ctx[4].length > 0) return create_if_block_2;
+    		if (/*isExpandable*/ ctx[3]) return create_if_block_2;
     		return create_else_block_1;
     	}
 
@@ -821,32 +821,32 @@ var app = (function () {
     			img2 = element("img");
     			t3 = space();
     			b = element("b");
-    			t4 = text(/*id*/ ctx[1]);
+    			t4 = text(/*id*/ ctx[0]);
     			t5 = space();
     			input = element("input");
     			t6 = space();
     			if (if_block1) if_block1.c();
-    			attr(img0, "class", "task-header-button skew-when-clicked svelte-mret5g");
+    			attr(img0, "class", "task-header-button skew-when-clicked svelte-18iy7p8");
     			if (!src_url_equal(img0.src, img0_src_value = "../assets/plus-white.png")) attr(img0, "src", img0_src_value);
     			attr(img0, "alt", "Add New Task");
-    			attr(img1, "class", "task-header-button skew-when-clicked svelte-mret5g");
+    			attr(img1, "class", "task-header-button skew-when-clicked svelte-18iy7p8");
     			if (!src_url_equal(img1.src, img1_src_value = "../assets/pencil-white.png")) attr(img1, "src", img1_src_value);
     			attr(img1, "alt", "Edit Task");
-    			attr(img2, "class", "task-header-button skew-when-clicked svelte-mret5g");
+    			attr(img2, "class", "task-header-button skew-when-clicked svelte-18iy7p8");
     			if (!src_url_equal(img2.src, img2_src_value = "../assets/check-white.png")) attr(img2, "src", img2_src_value);
     			attr(img2, "alt", "Complete Task");
-    			attr(div0, "class", "task-header svelte-mret5g");
 
-    			attr(input, "class", input_class_value = "task-title purple-focus " + (/*depth*/ ctx[0] % 2 == 1
-    			? 'odd-depth-background'
-    			: 'even-depth-background') + " svelte-mret5g");
+    			attr(div0, "class", div0_class_value = "task-header " + (/*isCompleted*/ ctx[4]
+    			? 'green-background'
+    			: 'violet-background') + " svelte-18iy7p8");
 
-    			input.value = /*name*/ ctx[5];
+    			attr(input, "class", "task-title purple-focus svelte-18iy7p8");
+    			input.value = /*name*/ ctx[6];
     			attr(input, "onkeypress", "this.style.width = (this.value.length + 2) + 'ch';");
 
-    			attr(div1, "class", div1_class_value = "task-card " + (/*depth*/ ctx[0] % 2 == 0
-    			? 'even-depth-background'
-    			: 'odd-depth-background') + " svelte-mret5g");
+    			attr(div1, "class", div1_class_value = "task-card " + (/*isCompleted*/ ctx[4]
+    			? 'green-border'
+    			: 'violet-border') + " svelte-18iy7p8");
     		},
     		m(target, anchor) {
     			insert(target, div1, anchor);
@@ -869,10 +869,10 @@ var app = (function () {
 
     			if (!mounted) {
     				dispose = [
-    					listen(img0, "click", /*addTask*/ ctx[7]),
-    					listen(img1, "click", /*editTask*/ ctx[8]),
-    					listen(img2, "click", completeTask),
-    					listen(input, "input", /*changeName*/ ctx[10])
+    					listen(img0, "click", /*addTask*/ ctx[8]),
+    					listen(img1, "click", /*editTask*/ ctx[9]),
+    					listen(img2, "click", /*toggleCompletion*/ ctx[13]),
+    					listen(input, "input", /*changeName*/ ctx[11])
     				];
 
     				mounted = true;
@@ -891,16 +891,16 @@ var app = (function () {
     				}
     			}
 
-    			if (!current || dirty & /*id*/ 2) set_data(t4, /*id*/ ctx[1]);
+    			if (!current || dirty & /*id*/ 1) set_data(t4, /*id*/ ctx[0]);
 
-    			if (!current || dirty & /*depth*/ 1 && input_class_value !== (input_class_value = "task-title purple-focus " + (/*depth*/ ctx[0] % 2 == 1
-    			? 'odd-depth-background'
-    			: 'even-depth-background') + " svelte-mret5g")) {
-    				attr(input, "class", input_class_value);
+    			if (!current || dirty & /*isCompleted*/ 16 && div0_class_value !== (div0_class_value = "task-header " + (/*isCompleted*/ ctx[4]
+    			? 'green-background'
+    			: 'violet-background') + " svelte-18iy7p8")) {
+    				attr(div0, "class", div0_class_value);
     			}
 
-    			if (!current || dirty & /*name*/ 32 && input.value !== /*name*/ ctx[5]) {
-    				input.value = /*name*/ ctx[5];
+    			if (!current || dirty & /*name*/ 64 && input.value !== /*name*/ ctx[6]) {
+    				input.value = /*name*/ ctx[6];
     			}
 
     			if (/*isExpanded*/ ctx[2]) {
@@ -926,9 +926,9 @@ var app = (function () {
     				check_outros();
     			}
 
-    			if (!current || dirty & /*depth*/ 1 && div1_class_value !== (div1_class_value = "task-card " + (/*depth*/ ctx[0] % 2 == 0
-    			? 'even-depth-background'
-    			: 'odd-depth-background') + " svelte-mret5g")) {
+    			if (!current || dirty & /*isCompleted*/ 16 && div1_class_value !== (div1_class_value = "task-card " + (/*isCompleted*/ ctx[4]
+    			? 'green-border'
+    			: 'violet-border') + " svelte-18iy7p8")) {
     				attr(div1, "class", div1_class_value);
     			}
     		},
@@ -951,7 +951,7 @@ var app = (function () {
     	};
     }
 
-    // (75:8) {:else}
+    // (98:8) {:else}
     function create_else_block_1(ctx) {
     	let img;
     	let img_src_value;
@@ -961,7 +961,7 @@ var app = (function () {
     	return {
     		c() {
     			img = element("img");
-    			attr(img, "class", "task-header-button skew-when-clicked svelte-mret5g");
+    			attr(img, "class", "task-header-button skew-when-clicked svelte-18iy7p8");
     			if (!src_url_equal(img.src, img_src_value = "../assets/cancel-white.png")) attr(img, "src", img_src_value);
     			attr(img, "alt", "Remove Task");
     		},
@@ -969,7 +969,7 @@ var app = (function () {
     			insert(target, img, anchor);
 
     			if (!mounted) {
-    				dispose = listen(img, "click", /*removeTask*/ ctx[11]);
+    				dispose = listen(img, "click", /*removeTask*/ ctx[12]);
     				mounted = true;
     			}
     		},
@@ -982,7 +982,7 @@ var app = (function () {
     	};
     }
 
-    // (69:8) {#if children.length > 0}
+    // (92:8) {#if isExpandable}
     function create_if_block_2(ctx) {
     	let if_block_anchor;
 
@@ -1023,7 +1023,7 @@ var app = (function () {
     	};
     }
 
-    // (72:12) {:else}
+    // (95:12) {:else}
     function create_else_block(ctx) {
     	let img;
     	let img_src_value;
@@ -1033,7 +1033,7 @@ var app = (function () {
     	return {
     		c() {
     			img = element("img");
-    			attr(img, "class", "task-header-button rotate-when-clicked svelte-mret5g");
+    			attr(img, "class", "task-header-button rotate-when-clicked svelte-18iy7p8");
     			if (!src_url_equal(img.src, img_src_value = "../assets/chevron-down-white.png")) attr(img, "src", img_src_value);
     			attr(img, "alt", "Expand Task");
     		},
@@ -1041,7 +1041,7 @@ var app = (function () {
     			insert(target, img, anchor);
 
     			if (!mounted) {
-    				dispose = listen(img, "click", /*toggleExpansion*/ ctx[6]);
+    				dispose = listen(img, "click", /*toggleExpansion*/ ctx[7]);
     				mounted = true;
     			}
     		},
@@ -1054,7 +1054,7 @@ var app = (function () {
     	};
     }
 
-    // (70:12) {#if isExpanded}
+    // (93:12) {#if isExpanded}
     function create_if_block_3(ctx) {
     	let img;
     	let img_src_value;
@@ -1064,7 +1064,7 @@ var app = (function () {
     	return {
     		c() {
     			img = element("img");
-    			attr(img, "class", "task-header-button rotate-when-clicked svelte-mret5g");
+    			attr(img, "class", "task-header-button rotate-when-clicked svelte-18iy7p8");
     			if (!src_url_equal(img.src, img_src_value = "../assets/chevron-up-white.png")) attr(img, "src", img_src_value);
     			attr(img, "alt", "Minimize Task");
     		},
@@ -1072,7 +1072,7 @@ var app = (function () {
     			insert(target, img, anchor);
 
     			if (!mounted) {
-    				dispose = listen(img, "click", /*toggleExpansion*/ ctx[6]);
+    				dispose = listen(img, "click", /*toggleExpansion*/ ctx[7]);
     				mounted = true;
     			}
     		},
@@ -1085,11 +1085,11 @@ var app = (function () {
     	};
     }
 
-    // (94:4) {#if isExpanded}
+    // (116:4) {#if isExpanded}
     function create_if_block_1(ctx) {
     	let div;
     	let current;
-    	let each_value = /*children*/ ctx[4];
+    	let each_value = /*children*/ ctx[1];
     	let each_blocks = [];
 
     	for (let i = 0; i < each_value.length; i += 1) {
@@ -1108,7 +1108,7 @@ var app = (function () {
     				each_blocks[i].c();
     			}
 
-    			attr(div, "class", "task-space svelte-mret5g");
+    			attr(div, "class", "task-space svelte-18iy7p8");
     		},
     		m(target, anchor) {
     			insert(target, div, anchor);
@@ -1120,8 +1120,8 @@ var app = (function () {
     			current = true;
     		},
     		p(ctx, dirty) {
-    			if (dirty & /*children, depth, forwardEditTask*/ 529) {
-    				each_value = /*children*/ ctx[4];
+    			if (dirty & /*children, forwardEditTask*/ 1026) {
+    				each_value = /*children*/ ctx[1];
     				let i;
 
     				for (i = 0; i < each_value.length; i += 1) {
@@ -1172,19 +1172,12 @@ var app = (function () {
     	};
     }
 
-    // (96:12) {#each children as childTaskId}
+    // (118:12) {#each children as childTaskId}
     function create_each_block(ctx) {
     	let task;
     	let current;
-
-    	task = new Task({
-    			props: {
-    				id: /*childTaskId*/ ctx[15],
-    				depth: /*depth*/ ctx[0] + 1
-    			}
-    		});
-
-    	task.$on("editTask", /*forwardEditTask*/ ctx[9]);
+    	task = new Task({ props: { id: /*childTaskId*/ ctx[19] } });
+    	task.$on("editTask", /*forwardEditTask*/ ctx[10]);
 
     	return {
     		c() {
@@ -1196,8 +1189,7 @@ var app = (function () {
     		},
     		p(ctx, dirty) {
     			const task_changes = {};
-    			if (dirty & /*children*/ 16) task_changes.id = /*childTaskId*/ ctx[15];
-    			if (dirty & /*depth*/ 1) task_changes.depth = /*depth*/ ctx[0] + 1;
+    			if (dirty & /*children*/ 2) task_changes.id = /*childTaskId*/ ctx[19];
     			task.$set(task_changes);
     		},
     		i(local) {
@@ -1218,7 +1210,7 @@ var app = (function () {
     function create_fragment$1(ctx) {
     	let if_block_anchor;
     	let current;
-    	let if_block = !/*isRemoved*/ ctx[3] && create_if_block(ctx);
+    	let if_block = !/*isRemoved*/ ctx[5] && create_if_block(ctx);
 
     	return {
     		c() {
@@ -1231,11 +1223,11 @@ var app = (function () {
     			current = true;
     		},
     		p(ctx, [dirty]) {
-    			if (!/*isRemoved*/ ctx[3]) {
+    			if (!/*isRemoved*/ ctx[5]) {
     				if (if_block) {
     					if_block.p(ctx, dirty);
 
-    					if (dirty & /*isRemoved*/ 8) {
+    					if (dirty & /*isRemoved*/ 32) {
     						transition_in(if_block, 1);
     					}
     				} else {
@@ -1270,38 +1262,33 @@ var app = (function () {
     	};
     }
 
-    function completeTask() {
-    	
-    } // ToDo: Implement
-
     function instance$1($$self, $$props, $$invalidate) {
     	let name;
     	let children;
     	let isExpanded;
     	let isRemoved;
+    	let isCompleted;
+    	let isExpandable;
     	let $allTasks;
     	let $taskCount;
-    	component_subscribe($$self, allTasks, $$value => $$invalidate(12, $allTasks = $$value));
-    	component_subscribe($$self, taskCount, $$value => $$invalidate(13, $taskCount = $$value));
+    	component_subscribe($$self, allTasks, $$value => $$invalidate(14, $allTasks = $$value));
+    	component_subscribe($$self, taskCount, $$value => $$invalidate(15, $taskCount = $$value));
     	const dispatch = createEventDispatcher();
     	let { id } = $$props;
-    	let { depth } = $$props;
-
-    	if (!depth) {
-    		depth = 0;
-    	}
 
     	function toggleExpansion() {
     		set_store_value(allTasks, $allTasks[id].isExpanded = !isExpanded, $allTasks);
-    	}
+    	} // ToDo: Minimize children ?
 
     	function addTask() {
     		let newTask = {
     			id: $taskCount,
     			name: "New Task",
+    			parent: id,
     			children: [],
     			isExpanded: true,
     			isRemoved: false,
+    			isCompleted: false,
     			details: ""
     		};
 
@@ -1329,37 +1316,71 @@ var app = (function () {
 
     	function removeTask() {
     		set_store_value(allTasks, $allTasks[id].isRemoved = true, $allTasks);
+    	} // ToDo: Remove children
+
+    	function toggleCompletion() {
+    		if ($allTasks[id].isCompleted) {
+    			uncompleteTask(id);
+    		} else {
+    			completeTask(id);
+    		}
+    	}
+
+    	function completeTask(id) {
+    		set_store_value(allTasks, $allTasks[id].isCompleted = true, $allTasks);
+
+    		for (let childId of $allTasks[id].children) {
+    			completeTask(childId);
+    		}
+    	} // ToDo: Check if parent must be completed ?
+
+    	function uncompleteTask(id) {
+    		set_store_value(allTasks, $allTasks[id].isCompleted = false, $allTasks);
+
+    		if ($allTasks[id].parent != null) {
+    			uncompleteTask($allTasks[id].parent);
+    		}
     	}
 
     	$$self.$$set = $$props => {
-    		if ('id' in $$props) $$invalidate(1, id = $$props.id);
-    		if ('depth' in $$props) $$invalidate(0, depth = $$props.depth);
+    		if ('id' in $$props) $$invalidate(0, id = $$props.id);
     	};
 
     	$$self.$$.update = () => {
-    		if ($$self.$$.dirty & /*$allTasks, id*/ 4098) {
-    			 $$invalidate(5, name = $allTasks[id].name);
+    		if ($$self.$$.dirty & /*$allTasks, id*/ 16385) {
+    			 $$invalidate(6, name = $allTasks[id].name);
     		}
 
-    		if ($$self.$$.dirty & /*$allTasks, id*/ 4098) {
-    			 $$invalidate(4, children = $allTasks[id].children);
+    		if ($$self.$$.dirty & /*$allTasks, id*/ 16385) {
+    			 $$invalidate(1, children = $allTasks[id].children);
     		}
 
-    		if ($$self.$$.dirty & /*$allTasks, id*/ 4098) {
+    		if ($$self.$$.dirty & /*$allTasks, id*/ 16385) {
     			 $$invalidate(2, isExpanded = $allTasks[id].isExpanded);
     		}
 
-    		if ($$self.$$.dirty & /*$allTasks, id*/ 4098) {
-    			 $$invalidate(3, isRemoved = $allTasks[id].isRemoved);
+    		if ($$self.$$.dirty & /*$allTasks, id*/ 16385) {
+    			 $$invalidate(5, isRemoved = $allTasks[id].isRemoved);
+    		}
+
+    		if ($$self.$$.dirty & /*$allTasks, id*/ 16385) {
+    			 $$invalidate(4, isCompleted = $allTasks[id].isCompleted);
+    		}
+
+    		if ($$self.$$.dirty & /*children, $allTasks*/ 16386) {
+    			 $$invalidate(3, isExpandable = children.filter(childId => {
+    				return !$allTasks[childId].isRemoved;
+    			}).length > 0);
     		}
     	};
 
     	return [
-    		depth,
     		id,
-    		isExpanded,
-    		isRemoved,
     		children,
+    		isExpanded,
+    		isExpandable,
+    		isCompleted,
+    		isRemoved,
     		name,
     		toggleExpansion,
     		addTask,
@@ -1367,6 +1388,7 @@ var app = (function () {
     		forwardEditTask,
     		changeName,
     		removeTask,
+    		toggleCompletion,
     		$allTasks
     	];
     }
@@ -1374,7 +1396,7 @@ var app = (function () {
     class Task extends SvelteComponent {
     	constructor(options) {
     		super();
-    		init(this, options, instance$1, create_fragment$1, safe_not_equal, { id: 1, depth: 0 });
+    		init(this, options, instance$1, create_fragment$1, safe_not_equal, { id: 0 });
     	}
     }
 
@@ -1523,6 +1545,7 @@ var app = (function () {
     		children: [],
     		isExpanded: true,
     		isRemoved: false,
+    		isCompleted: false,
     		details: ""
     	};
 

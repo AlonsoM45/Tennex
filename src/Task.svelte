@@ -23,6 +23,7 @@
         let newTask = {
             id: $taskCount,
             name: "New Task",
+            parent: id,
             children: [],
             isExpanded: true,
             isRemoved: false,
@@ -59,9 +60,28 @@
         // ToDo: Remove children
     }
 
-    function completeTask(){
+    function toggleCompletion(){
+        if ($allTasks[id].isCompleted){
+            uncompleteTask(id);
+        } else {
+            completeTask(id);
+        }
+    }
+
+    function completeTask(id){
         $allTasks[id].isCompleted = true;
-        // ToDo: Complete children
+        for (let childId of $allTasks[id].children){
+            completeTask(childId);
+        }
+        
+        // ToDo: Check if parent must be completed ?
+    }
+
+    function uncompleteTask(id){
+        $allTasks[id].isCompleted = false;
+        if ($allTasks[id].parent != null){
+            uncompleteTask($allTasks[id].parent);
+        }      
     }
 </script>
 
@@ -81,7 +101,7 @@
 
         <img class="task-header-button skew-when-clicked" on:click={addTask} src="../assets/plus-white.png" alt="Add New Task"/>
         <img class="task-header-button skew-when-clicked" on:click={editTask} src="../assets/pencil-white.png" alt="Edit Task"/>
-        <img class="task-header-button skew-when-clicked" on:click={completeTask} src="../assets/check-white.png" alt="Complete Task"/>
+        <img class="task-header-button skew-when-clicked" on:click={toggleCompletion} src="../assets/check-white.png" alt="Complete Task"/>
         
         <b>{id}</b>
     </div>

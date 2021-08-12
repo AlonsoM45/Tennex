@@ -1,5 +1,5 @@
 <script>
-	import { allTasks, taskCount } from './stores.js';
+	import { allTasks, taskCount, selectedTaskId } from './stores.js';
     import { createEventDispatcher } from 'svelte';
     const dispatch = createEventDispatcher();
 
@@ -10,9 +10,12 @@
     $: isExpanded = $allTasks[id].isExpanded;
     $: isRemoved = $allTasks[id].isRemoved;
     $: isCompleted = $allTasks[id].isCompleted;
+    $: isBlocked = $allTasks[id].isBlocked;
+
     $: isExpandable = children.filter(childId => {
         return !($allTasks[childId].isRemoved);
     }).length > 0;
+    $: isSelected = $selectedTaskId == id;
 
     function toggleExpansion(){
         $allTasks[id].isExpanded = !isExpanded;
@@ -28,6 +31,7 @@
             isExpanded: true,
             isRemoved: false,
             isCompleted: false,
+            isBlocked: false,
             details: "",
         };
         
@@ -46,6 +50,7 @@
     }
 
     function editTask(){
+        $selectedTaskId = id;
 		dispatch('editTask', {
 			id: id
 		});
@@ -64,8 +69,27 @@
         $allTasks[id].isRemoved = true;
     }
 
+    function toggleLockStatus(){
+        if (isBlocked){
+            unblockTask(id);
+        }else{
+            blockTask(id);
+        }
+    }
+
+    function blockTask(id){
+        $allTasks[id].isBlocked = true;
+        for (let childId of $allTasks[id].children){
+            blockTask(childId);
+        }
+    }
+
+    function unblockTask(id){
+        $allTasks[id].isBlocked = false;
+    }
+
     function toggleCompletion(){
-        if ($allTasks[id].isCompleted){
+        if (isCompleted){
             uncompleteTask(id);
         } else {
             completeTask(id);
@@ -74,6 +98,7 @@
 
     function completeTask(id){
         $allTasks[id].isCompleted = true;
+        $allTasks[id].isBlocked = false;
         for (let childId of $allTasks[id].children){
             completeTask(childId);
         }
@@ -89,8 +114,8 @@
 
 <!-- ToDo: Add possibility to "rescue" tasks (and permanently delete, also) [LOW PRIORITY] -->
 {#if !isRemoved}
-<div class="task-card { isCompleted ? 'green-border' : 'violet-border' }">
-    <div class="task-header { isCompleted ? 'green-background' : 'violet-background' }">
+<div class="task-card { isSelected ? 'violet-border' : (isCompleted ? 'green-border' : (isBlocked ? 'red-border' : 'neutral-border'))}">
+    <div class="task-header { isSelected ? 'violet-background' : (isCompleted ? 'green-background' : (isBlocked ? 'red-background' : 'neutral-background')) }">
         {#if isExpandable} <!-- Hide expand/minimize if there are no tasks-->
             {#if isExpanded}
                 <img class="task-header-button rotate-when-clicked" on:click={toggleExpansion} src="../assets/chevron-up-white.png" alt="Minimize Task"/>
@@ -103,7 +128,12 @@
 
         <img class="task-header-button skew-when-clicked" on:click={addTask} src="../assets/plus-white.png" alt="Add New Task"/>
         <img class="task-header-button skew-when-clicked" on:click={editTask} src="../assets/pencil-white.png" alt="Edit Task"/>
-        <img class="task-header-button skew-when-clicked" on:click={toggleCompletion} src="../assets/check-white.png" alt="Complete Task"/>
+        
+        {#if !isCompleted}
+            <img class="task-header-button skew-when-clicked" on:click={toggleLockStatus} src="../assets/padlock-white.png" alt="Lock/Unlock Task"/>
+        {/if}
+
+        <img class="task-header-button skew-when-clicked" on:click={toggleCompletion} src="../assets/check-white.png" alt="Toggle Task Completion"/>
         
         <b>{id}</b>
     </div>
@@ -126,8 +156,23 @@
 {/if}
 
 <style>
+    /*
+    ToDo: Use this colors and aqua
+    .sky-background {
+        background-color: #32dbdb;
+    }
+    */
+
+    .red-background {
+        background-color: #b92840;
+    }
+
     .violet-background {
         background-color: #c567c5;
+    }
+
+    .neutral-background {
+        background-color: #5e486b;
     }
 
     .green-background {
@@ -173,12 +218,27 @@
         flex-wrap: wrap;
     }
 
+    /*
+    ToDo: Use this colors and aqua
+    .sky-border {
+        border: 1.5px solid #32dbdb;
+    }
+    */
+
+    .red-border {
+        border: 1.5px solid #b92840;
+    }
+
     .violet-border {
         border: 1.5px solid #c567c5;
     }
 
+    .neutral-border {
+        border: 1.5px solid #5e486b;
+    }
+
     .green-border {
-        border: 1.5px solid #359e6a;
+        border: 1.5px solid #359e6a; /* ToDo: Maybe use #28b99a; */
     }
 
     .task-card {
@@ -190,7 +250,7 @@
         min-height: 50px;
         height: min-content;
 
-        min-width: 100px;
+        min-width: 150px;
 
         display: inline-flex;
         flex-direction: column;

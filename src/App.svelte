@@ -18,6 +18,7 @@
 		isExpanded: true,
 		isRemoved: false,
 		isCompleted: false,
+		isBlocked: false,
 		details: "",
 	};
 

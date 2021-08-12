@@ -73,8 +73,6 @@
         for (let childId of $allTasks[id].children){
             completeTask(childId);
         }
-        
-        // ToDo: Check if parent must be completed ?
     }
 
     function uncompleteTask(id){

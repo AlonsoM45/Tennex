@@ -774,7 +774,7 @@ var app = (function () {
     	return child_ctx;
     }
 
-    // (89:0) {#if !isRemoved}
+    // (87:0) {#if !isRemoved}
     function create_if_block(ctx) {
     	let div1;
     	let div0;
@@ -951,7 +951,7 @@ var app = (function () {
     	};
     }
 
-    // (98:8) {:else}
+    // (96:8) {:else}
     function create_else_block_1(ctx) {
     	let img;
     	let img_src_value;
@@ -982,7 +982,7 @@ var app = (function () {
     	};
     }
 
-    // (92:8) {#if isExpandable}
+    // (90:8) {#if isExpandable}
     function create_if_block_2(ctx) {
     	let if_block_anchor;
 
@@ -1023,7 +1023,7 @@ var app = (function () {
     	};
     }
 
-    // (95:12) {:else}
+    // (93:12) {:else}
     function create_else_block(ctx) {
     	let img;
     	let img_src_value;
@@ -1054,7 +1054,7 @@ var app = (function () {
     	};
     }
 
-    // (93:12) {#if isExpanded}
+    // (91:12) {#if isExpanded}
     function create_if_block_3(ctx) {
     	let img;
     	let img_src_value;
@@ -1085,7 +1085,7 @@ var app = (function () {
     	};
     }
 
-    // (116:4) {#if isExpanded}
+    // (114:4) {#if isExpanded}
     function create_if_block_1(ctx) {
     	let div;
     	let current;
@@ -1172,7 +1172,7 @@ var app = (function () {
     	};
     }
 
-    // (118:12) {#each children as childTaskId}
+    // (116:12) {#each children as childTaskId}
     function create_each_block(ctx) {
     	let task;
     	let current;
@@ -1332,7 +1332,7 @@ var app = (function () {
     		for (let childId of $allTasks[id].children) {
     			completeTask(childId);
     		}
-    	} // ToDo: Check if parent must be completed ?
+    	}
 
     	function uncompleteTask(id) {
     		set_store_value(allTasks, $allTasks[id].isCompleted = false, $allTasks);

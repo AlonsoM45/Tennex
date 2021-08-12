@@ -10,6 +10,7 @@
 	let oldTasksFilename = app.getPath('userData') + "/old-tasks.json";
 	let isTopPanelOpen = false;
 	let selectedTaskId = 0;
+	let dataHasChanged = false;
 
 	let firstTask = {
 		id: 0,
@@ -51,19 +52,29 @@
 		}
 		
 		const unsuscribeToAllTasks = allTasks.subscribe(tasksArray => {
-			writeAllTasks(tasksArray);
+			dataHasChanged = true;
 		});
 	});	
 
-	function writeAllTasks(tasksArray){
+	function writeAllTasks(){
+		let tasksArray = $allTasks; 
 		try {
 			fs.writeFileSync(tasksFilename, JSON.stringify(tasksArray));
+			dataHasChanged = false;
 			console.log("Writing...");
 		} catch(e){
 			console.log(e);
 			alert('Failed to save the file!');
 		}
 	}
+
+	function writeAllTasksIfNeeded(){
+		if (dataHasChanged){
+			writeAllTasks();
+		}
+	}
+
+	setInterval(writeAllTasksIfNeeded, 10000);
 </script>
 
 {#if isTopPanelOpen}

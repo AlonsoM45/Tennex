@@ -7,8 +7,14 @@
     export let taskId;
 
     $: selectedTask = $allTasks[taskId];
+    
     function hidePanel(){
 		dispatch('hide', {});
+    }
+
+    function changeDetails(event){
+        $allTasks[taskId].details = event.target.value;
+        // ToDo: Check that this is changed in the file [LOW PRIORITY]
     }
 </script>
 
@@ -19,7 +25,7 @@
         <b>Editing Task #{taskId} : {selectedTask.name}</b>
     </div>
 
-    <textarea class="purple-focus" placeholder="details" />
+    <textarea class="purple-focus" on:input={changeDetails} value={selectedTask.details} placeholder="details" />
 </div>
 
 <style>

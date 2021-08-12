@@ -242,6 +242,7 @@
     }
 
     .task-card {
+        position: relative;
         margin: 10px;
         border-top-right-radius: 16px;
         border-bottom-right-radius: 16px;

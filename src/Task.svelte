@@ -110,11 +110,46 @@
             uncompleteTask($allTasks[id].parent);
         }      
     }
+
+    function handleDragDrop(e) {
+        e.preventDefault();
+        let elementId = e.dataTransfer.getData("task-id");
+        let droppedTaskId = parseInt(elementId.substring(10, elementId.length)); // 10 is the length of "task-card-"
+        if (id != droppedTaskId){
+            // Add new children
+            console.log(id);
+            $allTasks[id].children.push(droppedTaskId);  
+              
+            // Remove old children
+            let parentId = $allTasks[droppedTaskId].parent;
+            console.log("Parent Id:" + parentId.toString());
+            $allTasks[parentId].children.splice($allTasks[parentId].children.indexOf(droppedTaskId), 1)
+
+            // Re-assign children to force update
+            $allTasks[id].children = $allTasks[id].children;
+            $allTasks[parentId].children = $allTasks[parentId].children;
+
+            // Change parent
+            $allTasks[droppedTaskId].parent = id;
+        }
+    }
+	
+    function handleDragStart(e) {
+        e.dataTransfer.dropEffect = "move";
+        e.dataTransfer.setData("task-id", e.target.getAttribute('id'));
+    }
 </script>
 
 <!-- ToDo: Add possibility to "rescue" tasks (and permanently delete, also) [LOW PRIORITY] -->
 {#if !isRemoved}
-<div class="task-card { isSelected ? 'violet-border' : (isCompleted ? 'green-border' : (isBlocked ? 'red-border' : 'neutral-border'))}">
+<div
+    id="task-card-{id}"
+    class="task-card { isSelected ? 'violet-border' : (isCompleted ? 'green-border' : (isBlocked ? 'red-border' : 'neutral-border'))}"
+    draggable="true"
+    on:dragstart={handleDragStart}
+    on:drop|stopPropagation={handleDragDrop} 
+	ondragover="return false"
+>
     <div class="task-header { isSelected ? 'violet-background' : (isCompleted ? 'green-background' : (isBlocked ? 'red-background' : 'neutral-background')) }">
         {#if isExpandable} <!-- Hide expand/minimize if there are no tasks-->
             {#if isExpanded}

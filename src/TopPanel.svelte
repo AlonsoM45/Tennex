@@ -1,6 +1,6 @@
 <script>
     import { createEventDispatcher } from 'svelte';
-    import { allTasks } from './stores';
+    import { allTasks, selectedTaskId } from './stores';
     
     const dispatch = createEventDispatcher();
     
@@ -9,6 +9,7 @@
     $: selectedTask = $allTasks[taskId];
     
     function hidePanel(){
+        $selectedTaskId = -1;
 		dispatch('hide', {});
     }
 

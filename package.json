@@ -1,5 +1,5 @@
 {
-  "name": "Tennex",
+  "name": "tennex",
   "productName": "Tennex",
   "version": "1.0.0",
   "description": "Note taking & Task prioritization app",
@@ -47,6 +47,7 @@
   "dependencies": {
     "electron-reload": "^1.5.0",
     "electron-squirrel-startup": "^1.0.0",
+    "fs": "^0.0.1-security",
     "rollup-plugin-css-only": "^3.1.0",
     "sirv-cli": "^0.4.4"
   },

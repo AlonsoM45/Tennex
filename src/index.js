@@ -14,10 +14,17 @@ if (require('electron-squirrel-startup')) {
 }
 
 const createWindow = () => {
+  // Get Icon
+  const nativeImage = require('electron').nativeImage;
+  const iconImage = nativeImage.createFromPath(__dirname + '../../public/img/logo.ico');
+
+  iconImage.setTemplateImage(true);
+
   // Create the browser window.
   const mainWindow = new BrowserWindow({
     width: 800,
-    height: 600,
+    height: 600,  
+    icon: iconImage,
     webPreferences: {
       nodeIntegration: true
     }
@@ -28,6 +35,7 @@ const createWindow = () => {
 
   // Open the DevTools.
   mainWindow.webContents.openDevTools();
+  console.log(__dirname);
 };
 
 // This method will be called when Electron has finished

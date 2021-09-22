@@ -13,6 +13,7 @@
     $: isBlocked = $allTasks[id].isBlocked;
 
     $: isExpandable = children.filter(childId => {
+        console.log(childId); // ToDo: Remove
         return !($allTasks[childId].isRemoved);
     }).length > 0;
     $: isSelected = $selectedTaskId == id;
@@ -117,12 +118,10 @@
         let droppedTaskId = parseInt(elementId.substring(10, elementId.length)); // 10 is the length of "task-card-"
         if (id != droppedTaskId){
             // Add new children
-            console.log(id);
             $allTasks[id].children.push(droppedTaskId);  
               
             // Remove old children
             let parentId = $allTasks[droppedTaskId].parent;
-            console.log("Parent Id:" + parentId.toString());
             $allTasks[parentId].children.splice($allTasks[parentId].children.indexOf(droppedTaskId), 1)
 
             // Re-assign children to force update
@@ -175,6 +174,7 @@
     
     <input
         class="task-title purple-focus"
+        style={"width:"+ ((name.length + 2) + 'ch;')}
         value={name}
         on:input={changeName}
         onkeypress="this.style.width = (this.value.length + 2) + 'ch';"

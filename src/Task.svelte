@@ -13,7 +13,6 @@
     $: isBlocked = $allTasks[id].isBlocked;
 
     $: isExpandable = children.filter(childId => {
-        console.log(childId); // ToDo: Remove
         return !($allTasks[childId].isRemoved);
     }).length > 0;
     $: isSelected = $selectedTaskId == id;

@@ -1,6 +1,6 @@
 {
-  "name": "arffen",
-  "productName": "Arffen",
+  "name": "tennex",
+  "productName": "Tennex",
   "version": "1.0.0",
   "description": "Note taking & Task prioritization app",
   "main": "src/index.js",

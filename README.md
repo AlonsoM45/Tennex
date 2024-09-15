@@ -1,20 +1,15 @@
-# Electron Forge + Svelte  Starter
+# Tennex
+This is a lightweight application that allows you to:
+- Track your tasks (with a name and a description)
+- Tasks can be nested inside other tasks
+- Mark your task as Done/Blocked/In Progress
 
-Get up and running with 💪 Svelte & ⚡ Electron. 
+## Development
+This is a **Svelte + Electron** application.
+- Use `pnpm install` to install dependencies
+- Use `pnpm start` to run the application
 
-## Usage
-
-```
-git clone https://github.com/codediodeio/electron-forge-svelte.git my-app
-cd my-app
-
-npm install
-npm start
-```
-
-![svelte electron](https://firebasestorage.googleapis.com/v0/b/fireship-app.appspot.com/o/assets%2Felectron-svelte-hello.png?alt=media&token=0d3ecb24-3024-4358-ac26-7676b3e60fa1)
-
-## Notes
+## Notes about the template that was used
 
 - src/index.js - Main electron process. 
 - src/svelte.js - Svelte app entrypoint. 

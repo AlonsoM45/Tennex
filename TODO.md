@@ -9,3 +9,4 @@
 - [ ] Use Typescript instead of Javascript
 - [ ] Fix/upgrade dependencies
 - [ ] Add tests
+- [ ] Add License

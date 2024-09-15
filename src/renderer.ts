@@ -1,3 +1,4 @@
+import * as fs from 'node:fs';
 /**
  * This file will automatically be loaded by vite and run in the "renderer" context.
  * To learn more about the differences between the "main" and the "renderer" context in
@@ -27,5 +28,8 @@
  */
 
 import './index.css';
+import { TennexClient } from './renderer/client';
 
 console.log('👋 This message is being logged by "renderer.ts", included via Vite');
+console.log(TennexClient.add(3, 4));
+fs.writeFileSync(`C:\\Users\\User\\Documents\\ComputerScience\\tennex\\some-file.txt`, 'Some text');

@@ -43,6 +43,9 @@
     "vite": "latest"
   },
   "dependencies": {
-    "electron-serve": "latest"
+    "@sveltejs/adapter-auto": "^3.2.4",
+    "@sveltejs/adapter-static": "^3.0.4",
+    "electron-serve": "latest",
+    "svelte-preprocess": "^6.0.2"
   }
 }

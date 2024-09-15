@@ -4,6 +4,11 @@
   "version": "1.0.0",
   "description": "Note taking & Task prioritization app",
   "main": "src/index.js",
+  "build": {
+    "files": [
+      "build/*"
+    ]
+  },
   "scripts": {
     "start": "concurrently \"npm:svelte-dev\" \"electron-forge start\"",
     "package": "electron-forge package",

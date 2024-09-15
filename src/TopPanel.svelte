@@ -34,6 +34,8 @@
         margin: 20px;
         background-color: #2c2c2e;
         color: white;
+        min-width: 400px;
+        min-height: 120px;
     }
 
     .panel {

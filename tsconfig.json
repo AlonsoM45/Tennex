@@ -1,20 +1,15 @@
 {
   "compilerOptions": {
+    "target": "ESNext",
     "module": "commonjs",
+    "allowJs": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
     "noImplicitAny": true,
     "sourceMap": true,
-    "outDir": "dist",
     "baseUrl": ".",
-    "paths": {
-      "*": ["node_modules/*"]
-    }
-  },
-  "include": [
-    "src/**/*"
-  ],
-  "files": [
-    "./src/main.ts",
-    "./src/preload.ts",
-    "./global.d.ts"
-  ]
+    "outDir": "dist",
+    "moduleResolution": "node",
+    "resolveJsonModule": true
+  }
 }

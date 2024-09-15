@@ -1,51 +1,42 @@
 {
-  "name": "electron-sveltekit-typescript-template",
-  "productName": "Electron + Sveltekit + Typescript template",
+  "name": "tennex",
+  "productName": "tennex",
   "version": "1.0.0",
-  "description": "A template project for an Electron app with SvelteKit UI powered by Vite and written with Typescript",
-  "author": "Gurjot Sidhu <contact@thatgurjot.com> (https://thatgurjot.com/)",
-  "homepage": "https://buzo.tools/",
-  "main": "./dist/main.js",
+  "description": "My Electron application description",
+  "main": ".vite/build/main.js",
   "scripts": {
-    "dev": "cross-env NODE_ENV=dev npm run dev:all",
-    "dev:all": "concurrently -n=svelte,electron -c='#ff3e00',blue \"npm run dev:svelte\" \"npm run dev:electron\"",
-    "dev:svelte": "cd ./renderer/ && vite dev",
-    "dev:electron": "tsc && electron ./dist/main.js",
-    "build": "cross-env NODE_ENV=production npm run build:svelte && npm run build:electron",
-    "build:svelte": "cd ./renderer/ && vite build",
-    "build:electron": "tsc && electron-builder build --mac --arm64 --config build.config.json",
-    "postinstall": "electron-builder install-app-deps",
-    "postinstallarm64": "electron-builder install-app-deps --arch arm64",
-    "watch": "tsc -w",
-    "lint": "eslint -c .eslintrc --ext .ts ./src",
-    "start": "npm run build && electron ./dist/main.js"
+    "start": "electron-forge start",
+    "package": "electron-forge package",
+    "make": "electron-forge make",
+    "publish": "electron-forge publish",
+    "lint": "eslint --ext .ts,.tsx ."
   },
-  "repository": "",
-  "keywords": [
-    "template",
-    "electron",
-    "typescript",
-    "svelte",
-    "vite",
-    "electron-builder"
-  ],
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "latest",
-    "@typescript-eslint/parser": "latest",
-    "concurrently": "latest",
-    "cross-env": "latest",
-    "electron": "latest",
-    "electron-builder": "latest",
-    "eslint": "latest",
-    "npm-run-all": "latest",
-    "tslib": "latest",
-    "typescript": "latest",
-    "vite": "latest"
+    "@electron-forge/cli": "^7.4.0",
+    "@electron-forge/maker-deb": "^7.4.0",
+    "@electron-forge/maker-rpm": "^7.4.0",
+    "@electron-forge/maker-squirrel": "^7.4.0",
+    "@electron-forge/maker-zip": "^7.4.0",
+    "@electron-forge/plugin-auto-unpack-natives": "^7.4.0",
+    "@electron-forge/plugin-fuses": "^7.4.0",
+    "@electron-forge/plugin-vite": "^7.4.0",
+    "@electron/fuses": "^1.8.0",
+    "@typescript-eslint/eslint-plugin": "^5.0.0",
+    "@typescript-eslint/parser": "^5.0.0",
+    "electron": "32.1.0",
+    "eslint": "^8.0.1",
+    "eslint-plugin-import": "^2.25.0",
+    "ts-node": "^10.0.0",
+    "typescript": "~4.5.4",
+    "vite": "^5.0.12"
   },
+  "keywords": [],
+  "author": {
+    "name": "Alonso Montero",
+    "email": "alonso.monterom61@gmail.com"
+  },
+  "license": "MIT",
   "dependencies": {
-    "@sveltejs/adapter-auto": "^3.2.4",
-    "@sveltejs/adapter-static": "^3.0.4",
-    "electron-serve": "latest",
-    "svelte-preprocess": "^6.0.2"
+    "electron-squirrel-startup": "^1.0.1"
   }
 }

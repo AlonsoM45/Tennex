@@ -1,0 +1,11 @@
+# TODO
+## Major Features
+- [ ] SQLite for Storage
+
+## Improvements
+- [ ] Better UX/UI for descriptions of tasks
+
+## Development Improvements
+- [ ] Use Typescript instead of Javascript
+- [ ] Fix/upgrade dependencies
+- [ ] Add tests

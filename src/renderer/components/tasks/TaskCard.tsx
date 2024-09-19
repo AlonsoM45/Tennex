@@ -4,6 +4,7 @@ import { COLORS, CORNER_RADIUS } from "@renderer/styles/constants";
 import { TaskHeader } from "./TaskHeader";
 import { TaskSpace } from "./TaskSpace";
 import { Task } from "@common/Task";
+import './TaskCard.scss';
 
 const styles: Record<string, CSSProperties> = {
   taskCard: {
@@ -20,7 +21,7 @@ const styles: Record<string, CSSProperties> = {
     display: 'inline-flex',
     flexDirection: 'column',
     paddingBottom: 5,
-    backgroundColor: '#2c2c2ed0', // WIP: Get from a theme
+    backgroundColor: '#2c2c2ed0', // TODO: Get from a theme
 
     borderWidth: 2,
     borderStyle: 'solid'
@@ -40,8 +41,7 @@ const styles: Record<string, CSSProperties> = {
     color: 'white',
     border: 0,
     fontWeight: 'bold'
-  },
-  purpleFocus: {} // WIP
+  }
 };
 
 export type ActualTaskProps = {
@@ -79,7 +79,8 @@ const ActualTaskCard = ({task}: ActualTaskProps) => {
     >
       <TaskHeader task={task} color={color}/>
       <input
-        style={{...styles.taskTitle, ...styles.purpleFocus, width: `${name.length}ch`}}
+        className="purple-focus"
+        style={{...styles.taskTitle, width: `${name.length}ch`}}
         value={name}
       />
       {isExpanded && <TaskSpace children={children}/>}

@@ -1,23 +1,29 @@
 import { AsyncValue } from "@common/AsyncValue";
 import { Task } from "@common/Task";
+import { taskQueryKey } from "@renderer/queryKeys";
 import { services } from "@renderer/services";
-import { useEffect, useState } from "react";
+import { useQuery } from '@tanstack/react-query'
 
-export const useTask = (taskId: number): AsyncValue<Task> => {
-  const [task, setTask] = useState<AsyncValue<Task>>({ status: "pending" });
+export const useTask = (taskId: number): AsyncValue<Task & { isExpandable: boolean }> => {
+  const taskQuery = useQuery({
+    queryKey: taskQueryKey(taskId),
+    queryFn: async () => {
+      const task = await services.taskRepo.getTask(taskId);
+      if (task === null) {
+        return null;
+      }
+      const isExpandable = await services.taskRepo.isTaskExpandable(taskId);
+      return {
+        ...task,
+        isExpandable
+      };
+    }
+  });
   
-  useEffect(() => {
-    services.taskRepo.getTask(taskId)
-      .then((data) => {
-        if (data === null) {
-          setTask({status: "failed"})
-        } else {
-          setTask({status: "ready", value: data});
-        }
-      })
-      .catch((_err) => setTask({status: "failed"}));
-
-  }, []);
-
-  return task;
+  if (taskQuery.isLoading) {
+    return {status: "pending"};
+  } else if (taskQuery.isError || !taskQuery.data) {
+    return {status: "failed"};
+  }
+  return {status: "ready", value: taskQuery.data };
 };

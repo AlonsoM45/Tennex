@@ -3,7 +3,9 @@ import { BaseTaskRepo, MinimalTask, TaskUpdater } from "./contracts/ITaskRepo";
 
 const defaultTask: Task = {
   id: 1,
+  parentId: null,
   name: 'My First Task',
+  description: "",
   children: [],
   isExpanded: false,
   isRemoved: false,
@@ -20,17 +22,29 @@ export class InMemoryTaskRepo extends BaseTaskRepo {
     this.tasks.set(1, {...defaultTask});
   }
   
-  newTask(task: MinimalTask): Promise<Task> {
-    const nextId = ++this.maxId;
-    const newTask = {...defaultTask, ...task};
-    this.tasks.set(nextId, newTask);
-    return Promise.resolve(newTask);
+  private async addChild(parentId: number, childId: number) {
+    let parent = await this.getTask(parentId);
+    if (parent) {
+      await this.updateTask(parentId, (oldTask) => ({
+        ...oldTask,
+        children: [...oldTask.children, childId],
+        isExpanded: true
+      }));
+    }
   }
 
-  getPage(first: number, pageSize: number): Promise<Task[]> {
+  async newTask(parentId: number, task: MinimalTask): Promise<Task> {
+    const nextId = ++this.maxId;
+    const newTask: Task = {...defaultTask, ...task, parentId, children: [], id: nextId};
+    this.tasks.set(nextId, newTask);
+    await this.addChild(parentId, nextId);
+    return newTask;
+  }
+
+  async getPage(first: number, pageSize: number): Promise<Task[]> {
     let page: Task[] = [];
     for (let id = first; id <= this.maxId; id++) {
-      const task = this.tasks.get(id);
+      const task = await this.getTask(id);
       if (task) {
         page.push(task);
       }
@@ -38,19 +52,31 @@ export class InMemoryTaskRepo extends BaseTaskRepo {
         break;
       }
     }
-    return Promise.resolve(page);
+    return page;
   }
 
   getTask(id: number): Promise<Task | null> {
     return Promise.resolve(this.tasks.get(id) ?? null);
   }
 
-  updateTask(id: number, updater: TaskUpdater): Promise<Task | null> {
-    const task = this.tasks.get(id);
-    if (task === undefined) {
-      return Promise.resolve(null);
+  async updateTask(id: number, updater: TaskUpdater): Promise<Task | null> {
+    const task = await this.getTask(id);
+    if (task === null) {
+      return null;
     }
     this.tasks.set(id, updater(task));
-    return Promise.resolve(task);
+    return task;
+  }
+  
+  async isTaskExpandable(id: number): Promise<boolean> {
+    const task = await this.getTask(id);
+    if (!task) {
+      return false;
+    }
+    const result = task.children.some(childId => {
+      const childTask = this.tasks.get(childId);
+      return childTask && !childTask.isRemoved;
+    });
+    return result;
   }
 };

@@ -46,17 +46,14 @@ const styles: Record<string, CSSProperties> = {
 
 export type ActualTaskProps = {
   task: Task;
+  isExpandable: boolean;
 };
 
-const ActualTaskCard = ({task}: ActualTaskProps) => {
-  const { isRemoved, isBlocked, isCompleted, isExpanded, name, children } = task;
+const ActualTaskCard = ({task, isExpandable}: ActualTaskProps) => {
+  const { isBlocked, isCompleted, isExpanded, name, children } = task;
   const [isSelected, setIsSelected] = useState(false); // WIP
 
   // WIP: Update persisted name in some way
-
-  if (task === null || task.isRemoved) {
-    return <></>;
-  }
 
   const color = useMemo(() => { // WIP: Improve type
     if (isSelected) {
@@ -77,7 +74,7 @@ const ActualTaskCard = ({task}: ActualTaskProps) => {
       style={{...styles.taskCard, borderColor: color}}
       draggable="true"
     >
-      <TaskHeader task={task} color={color}/>
+      <TaskHeader task={task} isExpandable={isExpandable} color={color}/>
       <input
         className="purple-focus"
         style={{...styles.taskTitle, width: `${name.length}ch`}}
@@ -96,7 +93,7 @@ export const TaskCard = ({taskId}: TaskProps) => {
   const task = useTask(taskId);
   switch (task.status) {
     case "ready":
-      return <ActualTaskCard task={task.value} />;
+      return task.value.isRemoved ? <></> : <ActualTaskCard task={task.value} isExpandable={task.value.isExpandable} />;
     case "pending":
       return <Spinner/>
     case "failed":

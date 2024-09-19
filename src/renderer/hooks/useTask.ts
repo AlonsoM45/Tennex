@@ -1,40 +1,23 @@
+import { AsyncValue } from "@common/AsyncValue";
 import { Task } from "@common/Task";
+import { services } from "@renderer/services";
+import { useEffect, useState } from "react";
 
-export const useTask = (taskId: number): Task | null => {
-  const a: Task = {
-    id: 2,
-    name: 'Task #2',
-    isBlocked: false,
-    isExpanded: false,
-    isCompleted: true,
-    isRemoved: false,
-    children: []
-  };
+export const useTask = (taskId: number): AsyncValue<Task> => {
+  const [task, setTask] = useState<AsyncValue<Task>>({ status: "pending" });
+  
+  useEffect(() => {
+    services.taskRepo.getTask(taskId)
+      .then((data) => {
+        if (data === null) {
+          setTask({status: "failed"})
+        } else {
+          setTask({status: "ready", value: data});
+        }
+      })
+      .catch((_err) => setTask({status: "failed"}));
 
-  const b: Task = {
-    id: 3,
-    name: 'Task #2',
-    isBlocked: false,
-    isExpanded: false,
-    isCompleted: true,
-    isRemoved: false,
-    children: []
-  };
-  const root: Task = {
-    id: 1,
-    name: 'Task #2',
-    isBlocked: false,
-    isExpanded: true,
-    isCompleted: true,
-    isRemoved: false,
-    children: [2, 3]
-  };
-  switch (taskId) { // WIP: Actually implement this function
-    case 2:
-      return a;
-    case 3: 
-      return b;
-    default:
-      return root;
-  }
+  }, []);
+
+  return task;
 };

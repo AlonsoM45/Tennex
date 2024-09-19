@@ -33,7 +33,7 @@ const WindowFrame: React.FC<Props> = (props) => {
   const itsRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const { parentElement } = itsRef.current;
+    const { parentElement } = itsRef.current as any; // TODO: What is this?
     parentElement.classList.add('has-electron-window');
     parentElement.classList.add('has-border');
 

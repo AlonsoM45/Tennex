@@ -14,4 +14,4 @@ const app = (
 );
 
 // Render application in DOM
-createRoot(document.getElementById('app')).render(app);
+createRoot(document.getElementById('app')!).render(app);

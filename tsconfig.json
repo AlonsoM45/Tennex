@@ -2,6 +2,7 @@
   "compilerOptions": {
     "jsx": "react",
     "allowJs": true,
+    "strict": true,
     "target": "ES6",
     "module": "ESNext",
     "skipLibCheck": true,

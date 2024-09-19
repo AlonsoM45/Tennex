@@ -6,7 +6,7 @@ import { registerTitlebarIpc } from '@main/window/titlebarIpc';
 declare const APP_WINDOW_WEBPACK_ENTRY: string;
 declare const APP_WINDOW_PRELOAD_WEBPACK_ENTRY: string;
 
-let appWindow: BrowserWindow;
+let appWindow: BrowserWindow | null;
 
 /**
  * Create Application Window
@@ -37,7 +37,7 @@ export function createAppWindow(): BrowserWindow {
   appWindow.loadURL(APP_WINDOW_WEBPACK_ENTRY);
 
   // Show window when its ready to
-  appWindow.on('ready-to-show', () => appWindow.show());
+  appWindow.on('ready-to-show', () => appWindow?.show());
 
   // Register Inter Process Communication for main process
   registerMainIPC();
@@ -59,5 +59,5 @@ function registerMainIPC() {
    * Here you can assign IPC related codes for the application window
    * to Communicate asynchronously from the main process to renderer processes.
    */
-  registerTitlebarIpc(appWindow);
+  registerTitlebarIpc(appWindow!);
 }

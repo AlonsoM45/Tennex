@@ -3,6 +3,7 @@ import React, { CSSProperties, useEffect, useMemo, useState } from "react";
 import { COLORS, CORNER_RADIUS } from "@renderer/styles/constants";
 import { TaskHeader } from "./TaskHeader";
 import { TaskSpace } from "./TaskSpace";
+import { Task } from "@common/Task";
 
 const styles: Record<string, CSSProperties> = {
   taskCard: {
@@ -43,12 +44,11 @@ const styles: Record<string, CSSProperties> = {
   purpleFocus: {} // WIP
 };
 
-export type TaskProps = {
-  taskId: number
+export type ActualTaskProps = {
+  task: Task;
 };
 
-export const TaskCard = ({taskId}: TaskProps) => {
-  const task = useTask(taskId);
+const ActualTaskCard = ({task}: ActualTaskProps) => {
   const { isRemoved, isBlocked, isCompleted, isExpanded, name, children } = task;
   const [isSelected, setIsSelected] = useState(false); // WIP
 
@@ -73,7 +73,7 @@ export const TaskCard = ({taskId}: TaskProps) => {
 
   return (
     <div
-      id={`task-card-${taskId}`}
+      id={`task-card-${task.id}`}
       style={{...styles.taskCard, borderColor: color}}
       draggable="true"
     >
@@ -86,3 +86,23 @@ export const TaskCard = ({taskId}: TaskProps) => {
     </div>
   );
 };
+
+export type TaskProps = {
+  taskId: number
+};
+
+export const TaskCard = ({taskId}: TaskProps) => {
+  const task = useTask(taskId);
+  switch (task.status) {
+    case "ready":
+      return <ActualTaskCard task={task.value} />;
+    case "pending":
+      return <Spinner/>
+    case "failed":
+    default:
+      return <Oops/>;
+  }
+};
+
+export const Spinner = () => (<div>Loading...</div>); // WIP
+export const Oops = () => (<div>Oops...</div>); // WIP

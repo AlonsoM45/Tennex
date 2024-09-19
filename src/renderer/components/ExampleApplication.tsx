@@ -11,7 +11,7 @@ const ExampleApplication: React.FC = () => {
    * On component mount
    */
   useEffect(() => {
-    const useDarkTheme = parseInt(localStorage.getItem('dark-mode'));
+    const useDarkTheme = parseInt(localStorage.getItem('dark-mode')!);
     if (isNaN(useDarkTheme)) {
       setDarkTheme(true);
     } else if (useDarkTheme == 1) {
@@ -22,7 +22,7 @@ const ExampleApplication: React.FC = () => {
 
     // Apply verisons
     const app = document.getElementById('app');
-    const versions = JSON.parse(app.getAttribute('data-versions'));
+    const versions = JSON.parse(app!.getAttribute('data-versions')!);
     setVersions(versions);
   }, []);
 

@@ -15,7 +15,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
   // Process versions
   for (const type of ['chrome', 'node', 'electron']) {
-    versions[type] = process.versions[type].replace('+', '');
+    versions[type] = process.versions[type]!.replace('+', '');
   }
 
   // NPM deps versions
@@ -31,5 +31,5 @@ window.addEventListener('DOMContentLoaded', () => {
   }
 
   // Set versions to app data
-  app.setAttribute('data-versions', JSON.stringify(versions));
+  app!.setAttribute('data-versions', JSON.stringify(versions));
 });

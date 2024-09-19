@@ -24,7 +24,7 @@ export const useTask = (taskId: number): Task | null => {
     id: 1,
     name: 'Task #2',
     isBlocked: false,
-    isExpanded: false,
+    isExpanded: true,
     isCompleted: true,
     isRemoved: false,
     children: [2, 3]

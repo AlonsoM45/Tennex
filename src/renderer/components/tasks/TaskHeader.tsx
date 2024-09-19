@@ -34,7 +34,6 @@ export type TaskHeaderProps = {
 
 export const TaskHeader = ({task, color}: TaskHeaderProps) => {
   const isExpandable = true; // WIP
-  const isExpanded = true; // WIP
 
   const toggleExpansion = useCallback(() => {}, []); // WIP
   const removeTask = useCallback(() => {}, []); // WIP
@@ -52,7 +51,7 @@ export const TaskHeader = ({task, color}: TaskHeaderProps) => {
         ? <img
             style={{...styles.taskHeaderButton, ...styles.rotateWhenClicked}}
             onClick={toggleExpansion}
-            src={isExpanded ? chevronUpWhite : chevronDownWhite} alt={isExpanded ? "Minimize Task" : "Expand Task"} 
+            src={task.isExpanded ? chevronUpWhite : chevronDownWhite} alt={task.isExpanded ? "Minimize Task" : "Expand Task"} 
           />
         : <img
             style={{...styles.taskHeaderButton, ...styles.skewWhenClicked}}

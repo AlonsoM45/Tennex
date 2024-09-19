@@ -49,7 +49,7 @@ export type TaskProps = {
 
 export const TaskCard = ({taskId}: TaskProps) => {
   const task = useTask(taskId);
-  const { isRemoved, isBlocked, isCompleted, name } = task;
+  const { isRemoved, isBlocked, isCompleted, isExpanded, name, children } = task;
   const [isSelected, setIsSelected] = useState(false); // WIP
 
   // WIP: Update persisted name in some way
@@ -82,7 +82,7 @@ export const TaskCard = ({taskId}: TaskProps) => {
         style={{...styles.taskTitle, ...styles.purpleFocus, width: `${name.length}ch`}}
         value={name}
       />
-      <TaskSpace />
+      {isExpanded && <TaskSpace children={children}/>}
     </div>
-  ); // WIP: Add input, children
+  );
 };

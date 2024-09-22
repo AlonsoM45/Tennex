@@ -73,7 +73,7 @@ const ActualTaskCard = ({task, isExpandable}: ActualTaskProps) => {
   });
   const isSelected = useMemo(() => selectedTaskId.data === task.id, [task.id, selectedTaskId.data]);
 
-  const {changeName} = useTaskActions(task.id);
+  const {changeName, changeParent} = useTaskActions(task.id);
   useDebouncedEffect(() => {
     changeName(localName);
     return undefined;
@@ -96,14 +96,14 @@ const ActualTaskCard = ({task, isExpandable}: ActualTaskProps) => {
     () => ({
       type: ItemTypes.BOX,
       item: {id: task.id},
-      end(item, monitor) {
+      end(_item, monitor) {
         const dropResult = monitor.getDropResult<DropResult>();
         if (dropResult !== null) {
-          alert(`Switching parent of Task #${item.id} to Task#${dropResult.parentId}`);
+          changeParent(dropResult.parentId);
         }
       }
     }),
-    [task.id]
+    [task.id, changeParent]
   );
 
   const [_dropProps, drop] = useDrop(
@@ -120,7 +120,8 @@ const ActualTaskCard = ({task, isExpandable}: ActualTaskProps) => {
       }
     }),
     [task.id],
-  )
+  );
+
   return (
     <div
       id={`task-card-${task.id}`}

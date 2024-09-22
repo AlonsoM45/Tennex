@@ -1,4 +1,4 @@
-import { selectedTaskQueryKey, taskQueryKey } from "@renderer/queryKeys";
+import { selectedTaskQueryKey, taskQueryKey, tasksQueryKey } from "@renderer/queryKeys";
 import { services } from "@renderer/services";
 import { useQueryClient } from "@tanstack/react-query";
 import { useCallback } from "react";
@@ -12,7 +12,9 @@ export const useTaskActions = (taskId: number) => {
   const addChild = useCallback(async () => {
     const newTask = await services.taskRepo.newTask(taskId, { name: 'New Task' });
     await invalidateTask(taskId);
-    await invalidateTask(newTask.id);
+    if (newTask) {
+      await invalidateTask(newTask.id);
+    }
     return newTask;
   }, [taskId]);
 
@@ -26,12 +28,17 @@ export const useTaskActions = (taskId: number) => {
   }, [taskId]);
 
   const changeName = useCallback(async (newName: string) => {
-    console.log("Changing Name");
     const updatedTask = await services.taskRepo.updateTask(taskId, (oldTask) => ({
       ...oldTask,
       name: newName
     }));
     await invalidateTask(taskId);
+    return updatedTask;
+  }, [taskId]);
+
+  const changeParent = useCallback(async (newParentId: number) => {
+    const updatedTask = await services.taskRepo.changeParent(taskId, newParentId);
+    await queryClient.invalidateQueries({queryKey: tasksQueryKey});
     return updatedTask;
   }, [taskId]);
 
@@ -105,6 +112,7 @@ export const useTaskActions = (taskId: number) => {
     expandTask,
     continueTask,
     collapseTask,
+    changeParent,
     selectTask
   };
 };

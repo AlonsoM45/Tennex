@@ -1,8 +1,8 @@
-import { BaseTaskRepo } from "./contracts/ITaskRepo";
+import { ITaskRepo } from "./contracts/ITaskRepo";
 import { InMemoryTaskRepo } from "./InMemoryTaskRepo"
 
 export type Services = {
-  taskRepo: BaseTaskRepo
+  taskRepo: ITaskRepo
 };
 
 const initializeServices = (): Services => {

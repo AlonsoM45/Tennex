@@ -1,4 +1,4 @@
-import { taskQueryKey } from "@renderer/queryKeys";
+import { selectedTaskQueryKey, taskQueryKey } from "@renderer/queryKeys";
 import { services } from "@renderer/services";
 import { useQueryClient } from "@tanstack/react-query";
 import { useCallback } from "react";
@@ -85,6 +85,15 @@ export const useTaskActions = (taskId: number) => {
     [taskId]
   );
 
+  const selectTask = useCallback(
+    async () => {
+      const updatedTask = await services.taskRepo.updateSelectedTaskId(taskId);
+      await queryClient.invalidateQueries({queryKey: selectedTaskQueryKey});
+      return updatedTask;
+    },
+    [taskId]
+  );
+
   return {
     addChild,
     deleteTask,
@@ -94,6 +103,7 @@ export const useTaskActions = (taskId: number) => {
     unblockTask,
     expandTask,
     continueTask,
-    collapseTask
+    collapseTask,
+    selectTask
   };
 };

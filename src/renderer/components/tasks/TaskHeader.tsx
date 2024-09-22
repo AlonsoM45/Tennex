@@ -1,9 +1,8 @@
 import { Task } from "@common/Task";
 import { CORNER_RADIUS } from "@renderer/styles/constants";
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useMemo } from "react";
 import { CSSProperties } from "react";
 import checkWhite from "../../../../assets/icons/check-white.png";
-import pencilWhite from "../../../../assets/icons/pencil-white.png";
 import plusWhite from "../../../../assets/icons/plus-white.png";
 import cancelWhite from "../../../../assets/icons/cancel-white.png";
 import chevronUpWhite from "../../../../assets/icons/chevron-up-white.png";
@@ -33,10 +32,24 @@ export type TaskHeaderProps = {
 };
 
 export const TaskHeader = ({task, color, isExpandable}: TaskHeaderProps) => {
-  const {expandTask, collapseTask, deleteTask, addChild, blockTask, unblockTask, completeTask, continueTask } = useTaskActions(task.id);
+  const {
+    expandTask,
+    collapseTask,
+    deleteTask,
+    addChild,
+    blockTask,
+    unblockTask,
+    completeTask,
+    continueTask,
+    selectTask
+  } = useTaskActions(task.id);
   const isRoot = useMemo(() => task.parentId === null, [task.parentId]);
 
-  const editTask = useCallback(() => {}, []); // WIP
+  /* TODO: Allow users to edit tasks
+  const editTask = useCallback(() => {
+    void selectTask();
+  }, [selectTask]);
+  */
   
   const toggleExpansion = useCallback(() => {
     if (task.isExpanded) {
@@ -101,6 +114,8 @@ export const TaskHeader = ({task, color, isExpandable}: TaskHeaderProps) => {
         src={plusWhite}
         alt="Add New Task"
       />
+
+      {/* TODO: Allow users to edit tasks
       <img
         className="skew-when-clicked"
         style={styles.taskHeaderButton}
@@ -108,8 +123,8 @@ export const TaskHeader = ({task, color, isExpandable}: TaskHeaderProps) => {
         src={pencilWhite}
         alt="Edit Task"
       />
+      */}
 
-      
       {!task.isCompleted &&
         <img
           className="skew-when-clicked"

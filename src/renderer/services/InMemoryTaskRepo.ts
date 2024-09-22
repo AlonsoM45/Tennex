@@ -1,8 +1,12 @@
 import { Task } from "@common/Task";
 import { BaseTaskRepo, MinimalTask, TaskUpdater } from "./contracts/ITaskRepo";
 
+
+const ROOT_TASK_ID = 1;
+const NO_TASK_ID = -1;
+
 const defaultTask: Task = {
-  id: 1,
+  id: ROOT_TASK_ID,
   parentId: null,
   name: 'My First Task',
   description: "",
@@ -15,7 +19,8 @@ const defaultTask: Task = {
 
 export class InMemoryTaskRepo extends BaseTaskRepo {
   private readonly tasks = new Map<number, Task>();
-  private maxId: number = 1;
+  private maxId: number = ROOT_TASK_ID;
+  private selectedTaskId: number = NO_TASK_ID;
 
   constructor(){
     super()
@@ -31,6 +36,13 @@ export class InMemoryTaskRepo extends BaseTaskRepo {
         isExpanded: true
       }));
     }
+  }
+  
+  getSelectedTaskId(): Promise<number> { return Promise.resolve(this.selectedTaskId);}
+  
+  updateSelectedTaskId(id: number): Promise<void> {
+    this.selectedTaskId = id;
+    return Promise.resolve();
   }
 
   async newTask(parentId: number, task: MinimalTask): Promise<Task> {

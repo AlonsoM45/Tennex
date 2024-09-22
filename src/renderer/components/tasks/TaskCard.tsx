@@ -5,6 +5,10 @@ import { TaskHeader } from "./TaskHeader";
 import { TaskSpace } from "./TaskSpace";
 import { Task } from "@common/Task";
 import './TaskCard.scss';
+import { useQuery } from "@tanstack/react-query";
+import { services } from "@renderer/services";
+import { selectedTaskQueryKey } from "@renderer/queryKeys";
+import { debug } from "console";
 
 const styles: Record<string, CSSProperties> = {
   taskCard: {
@@ -51,8 +55,13 @@ export type ActualTaskProps = {
 
 const ActualTaskCard = ({task, isExpandable}: ActualTaskProps) => {
   const { isBlocked, isCompleted, isExpanded, name, children } = task;
-  const [isSelected, setIsSelected] = useState(false); // WIP
+  const selectedTaskId = useQuery({
+    queryKey: selectedTaskQueryKey,
+    queryFn: async () => await services.taskRepo.getSelectedTaskId()
+  });
+  const isSelected = useMemo(() => selectedTaskId.data === task.id, [task.id, selectedTaskId.data]);
 
+  debugger;
   // WIP: Update persisted name in some way
 
   const color = useMemo(() => { // WIP: Improve type

@@ -10,6 +10,8 @@ export interface ITaskRepo {
   updateTask(id: number, updater: TaskUpdater): Promise<Task | null>;
   newTask(parentId: number, task: MinimalTask): Promise<Task | null>;
   isTaskExpandable(id: number): Promise<boolean>;
+  getSelectedTaskId(): Promise<number>;
+  updateSelectedTaskId(id: number): Promise<void>;
 };
 
 export abstract class BaseTaskRepo implements ITaskRepo {
@@ -18,6 +20,8 @@ export abstract class BaseTaskRepo implements ITaskRepo {
   abstract getPage(first: number, pageSize: number): Promise<Task[] | null>;
   abstract getTask(id: number): Promise<Task | null>;
   abstract updateTask(id: number, updater: TaskUpdater): Promise<Task | null>;
+  abstract getSelectedTaskId(): Promise<number>;
+  abstract updateSelectedTaskId(id: number): Promise<void>;
 
   deleteTask(id: number): Promise<Task | null> {
     return this.updateTask(id, task => ({

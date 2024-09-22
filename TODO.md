@@ -1,7 +1,8 @@
-# TODO
+# To-Do List
 ## Major Features
 - [ ] Tasks
-  - [ ] Drag & Drop
+  - [x] Basic Functionality
+  - [x] Drag & Drop
   - [ ] Allowing users to edit tasks
 - [ ] SQLite for Storage
 - [ ] Installer & Icon
@@ -9,6 +10,7 @@
 
 ## Improvements
 - [ ] Better UX/UI for descriptions of tasks
+- [ ] Recursive Behavior for Completion/Blocking
 
 ## Development Improvements
 - [ ] Remove Dead Code

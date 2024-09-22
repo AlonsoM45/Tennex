@@ -10,6 +10,7 @@ import { services } from "@renderer/services";
 import { selectedTaskQueryKey } from "@renderer/queryKeys";
 import { useTaskActions } from "@renderer/hooks/useTaskActions";
 import { useDebouncedEffect } from "@renderer/hooks/useDebouncedEffect";
+import { useDrag, useDrop } from "react-dnd";
 
 const styles: Record<string, CSSProperties> = {
   taskCard: {
@@ -54,6 +55,14 @@ export type ActualTaskProps = {
   isExpandable: boolean;
 };
 
+export const ItemTypes = { // WIP: Check this
+  BOX: 'box',
+};
+
+type DropResult = {
+  parentId: number
+};
+
 const TIMEOUT_BEFORE_NAME_UPDATE = 1000;
 const ActualTaskCard = ({task, isExpandable}: ActualTaskProps) => {
   const { isBlocked, isCompleted, isExpanded, name, children } = task;
@@ -64,7 +73,7 @@ const ActualTaskCard = ({task, isExpandable}: ActualTaskProps) => {
   });
   const isSelected = useMemo(() => selectedTaskId.data === task.id, [task.id, selectedTaskId.data]);
 
-  const {changeName} = useTaskActions(task.id);
+  const {changeName, changeParent} = useTaskActions(task.id);
   useDebouncedEffect(() => {
     changeName(localName);
     return undefined;
@@ -83,21 +92,55 @@ const ActualTaskCard = ({task, isExpandable}: ActualTaskProps) => {
     return COLORS.darkPurple; // WIP: Use theme.neutral
   }, [isSelected, isCompleted, isBlocked]);
 
+  const [_dragProps, drag] = useDrag(
+    () => ({
+      type: ItemTypes.BOX,
+      item: {id: task.id},
+      end(_item, monitor) {
+        const dropResult = monitor.getDropResult<DropResult>();
+        if (dropResult !== null) {
+          changeParent(dropResult.parentId);
+        }
+      }
+    }),
+    [task.id, changeParent]
+  );
+
+  const [_dropProps, drop] = useDrop(
+    () => ({
+      accept: ItemTypes.BOX,
+      drop: (_item: unknown, monitor) => {
+        if (monitor.didDrop()) {
+          return;
+        }
+
+        return {
+          parentId: task.id
+        };
+      }
+    }),
+    [task.id],
+  );
+
   return (
     <div
       id={`task-card-${task.id}`}
       style={{...styles.taskCard, borderColor: color}}
       draggable="true"
+      ref={drag}
     >
       <TaskHeader task={task} isExpandable={isExpandable} color={color}/>
-      <input
-        className="purple-focus"
-        style={{...styles.taskTitle, width: `${localName.length}ch`}}
-        value={localName}
-        onChange={(event) => setLocalName(event.target.value)}
-        onBlur={(event) => changeName(event.target.value)}
-      />
-      {isExpanded && <TaskSpace children={children}/>}
+      <div style={{display: 'inline-flex', flexDirection: 'column'}} ref={drop}>
+        <input
+          className="purple-focus"
+          style={{...styles.taskTitle, width: `${localName.length}ch`}}
+          value={localName}
+          onChange={(event) => setLocalName(event.target.value)}
+          onBlur={(event) => changeName(event.target.value)}
+        />
+        {isExpanded && <TaskSpace children={children}/>}
+
+      </div>
     </div>
   );
 };

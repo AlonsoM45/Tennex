@@ -27,7 +27,7 @@ export class InMemoryTaskRepo extends BaseTaskRepo {
     this.tasks.set(1, {...defaultTask});
   }
   
-  private async addChild(parentId: number, childId: number) {
+  async addChild(parentId: number, childId: number) {
     let parent = await this.getTask(parentId);
     if (parent) {
       await this.updateTask(parentId, (oldTask) => ({
@@ -37,7 +37,7 @@ export class InMemoryTaskRepo extends BaseTaskRepo {
       }));
     }
   }
-  
+
   getSelectedTaskId(): Promise<number> { return Promise.resolve(this.selectedTaskId);}
   
   updateSelectedTaskId(id: number): Promise<void> {

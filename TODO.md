@@ -1,9 +1,11 @@
 # TODO
 ## Major Features
 - [ ] Tasks
-- [ ] Installer & Icon
+  - [ ] Drag & Drop
+  - [ ] Allowing users to edit tasks
 - [ ] SQLite for Storage
-- [ ] Allowing users to edit tasks
+- [ ] Installer & Icon
+- [ ] Descriptions & Tags for Tasks
 
 ## Improvements
 - [ ] Better UX/UI for descriptions of tasks

@@ -2,6 +2,7 @@
 ## Major Features
 - [ ] Tasks
 - [ ] SQLite for Storage
+- [ ] Allowing users to edit tasks
 
 ## Improvements
 - [ ] Better UX/UI for descriptions of tasks

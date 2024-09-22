@@ -1,6 +1,7 @@
 # TODO
 ## Major Features
 - [ ] Tasks
+- [ ] Installer & Icon
 - [ ] SQLite for Storage
 - [ ] Allowing users to edit tasks
 

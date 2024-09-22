@@ -8,7 +8,8 @@ import './TaskCard.scss';
 import { useQuery } from "@tanstack/react-query";
 import { services } from "@renderer/services";
 import { selectedTaskQueryKey } from "@renderer/queryKeys";
-import { debug } from "console";
+import { useTaskActions } from "@renderer/hooks/useTaskActions";
+import { useDebouncedEffect } from "@renderer/hooks/useDebouncedEffect";
 
 const styles: Record<string, CSSProperties> = {
   taskCard: {
@@ -53,16 +54,21 @@ export type ActualTaskProps = {
   isExpandable: boolean;
 };
 
+const TIMEOUT_BEFORE_NAME_UPDATE = 1000;
 const ActualTaskCard = ({task, isExpandable}: ActualTaskProps) => {
   const { isBlocked, isCompleted, isExpanded, name, children } = task;
+  const [localName, setLocalName] = useState(name);
   const selectedTaskId = useQuery({
     queryKey: selectedTaskQueryKey,
     queryFn: async () => await services.taskRepo.getSelectedTaskId()
   });
   const isSelected = useMemo(() => selectedTaskId.data === task.id, [task.id, selectedTaskId.data]);
 
-  debugger;
-  // WIP: Update persisted name in some way
+  const {changeName} = useTaskActions(task.id);
+  useDebouncedEffect(() => {
+    changeName(localName);
+    return undefined;
+  }, {timeout: TIMEOUT_BEFORE_NAME_UPDATE}, [changeName, localName]);
 
   const color = useMemo(() => { // WIP: Improve type
     if (isSelected) {
@@ -86,8 +92,10 @@ const ActualTaskCard = ({task, isExpandable}: ActualTaskProps) => {
       <TaskHeader task={task} isExpandable={isExpandable} color={color}/>
       <input
         className="purple-focus"
-        style={{...styles.taskTitle, width: `${name.length}ch`}}
-        value={name}
+        style={{...styles.taskTitle, width: `${localName.length}ch`}}
+        value={localName}
+        onChange={(event) => setLocalName(event.target.value)}
+        onBlur={(event) => changeName(event.target.value)}
       />
       {isExpanded && <TaskSpace children={children}/>}
     </div>

@@ -26,6 +26,7 @@ export const useTaskActions = (taskId: number) => {
   }, [taskId]);
 
   const changeName = useCallback(async (newName: string) => {
+    console.log("Changing Name");
     const updatedTask = await services.taskRepo.updateTask(taskId, (oldTask) => ({
       ...oldTask,
       name: newName

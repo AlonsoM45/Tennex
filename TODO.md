@@ -11,7 +11,6 @@
 - [ ] Better UX/UI for descriptions of tasks
 
 ## Development Improvements
-- [ ] Use Typescript instead of Javascript
+- [ ] Remove Dead Code
 - [ ] Fix/upgrade dependencies
 - [ ] Add tests
-- [ ] Add License

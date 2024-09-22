@@ -1,0 +1,7 @@
+.rotate-when-clicked:active {
+    transform: rotate(90deg); /* ToDo: Check if I can make this rotate faster [LOW PRIORITY]*/
+}
+
+.skew-when-clicked:active {
+    transform: skew(10deg, 5deg);
+}

@@ -12,7 +12,7 @@ export const useTask = (taskId: number): AsyncValue<Task & { isExpandable: boole
       if (task === null) {
         return null;
       }
-      const isExpandable = await services.taskRepo.isTaskExpandable(taskId);
+      const isExpandable = await services.taskRepo.isTaskExpandable(taskId); // TODO: Optimize this to only perform one query
       return {
         ...task,
         isExpandable

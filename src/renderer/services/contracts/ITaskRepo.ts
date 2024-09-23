@@ -5,7 +5,6 @@ export type TaskUpdater = (task: Task) => Task;
 export type MinimalTask = Exclude<Partial<Task>, {id: number}> & {name: string};
 
 export interface ITaskRepo {
-  getPage(first: number, pageSize: number): Promise<Task[] | null>;
   getTask(id: number): Promise<Task | null>;
   updateTask(id: number, updater: TaskUpdater): Promise<Task | null>;
   newTask(parentId: number, task: MinimalTask): Promise<Task | null>;
@@ -26,7 +25,6 @@ export abstract class BaseTaskRepo implements ITaskRepo {
   abstract isTaskExpandable(id: number): Promise<boolean>;
   abstract addChild(parentId: number, childId: number): Promise<void>;
   abstract newTask(parentId: number, task: MinimalTask): Promise<Task | null>;
-  abstract getPage(first: number, pageSize: number): Promise<Task[] | null>;
   abstract getTask(id: number): Promise<Task | null>;
   abstract updateTask(id: number, updater: TaskUpdater): Promise<Task | null>;
   abstract getSelectedTaskId(): Promise<number>;

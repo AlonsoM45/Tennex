@@ -98,7 +98,7 @@ const ActualTaskCard = ({task, isExpandable}: ActualTaskProps) => {
       item: {id: task.id},
       end(_item, monitor) {
         const dropResult = monitor.getDropResult<DropResult>();
-        if (dropResult !== null) {
+        if (dropResult !== null && dropResult.parentId !== task.id) {
           changeParent(dropResult.parentId);
         }
       }
@@ -139,7 +139,6 @@ const ActualTaskCard = ({task, isExpandable}: ActualTaskProps) => {
           onBlur={(event) => changeName(event.target.value)}
         />
         {isExpanded && <TaskSpace children={children}/>}
-
       </div>
     </div>
   );

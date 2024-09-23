@@ -1,4 +1,5 @@
 import { ITaskRepo } from "./contracts/ITaskRepo";
+import { DbTaskRepo } from "./DbTaskRepo";
 import { InMemoryTaskRepo } from "./InMemoryTaskRepo"
 
 export type Services = {
@@ -6,7 +7,7 @@ export type Services = {
 };
 
 const initializeServices = (): Services => {
-  const taskRepo = new InMemoryTaskRepo();
+  const taskRepo = new DbTaskRepo();
 
   return {
     taskRepo

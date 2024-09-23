@@ -1,6 +1,7 @@
 import { app, BrowserWindow } from 'electron';
 import path from 'path';
 import { registerTitlebarIpc } from '@main/window/titlebarIpc';
+import { registerDbBridgeIpc } from './window/dbBridgeIpc';
 
 // Electron Forge automatically creates these entry points
 declare const APP_WINDOW_WEBPACK_ENTRY: string;
@@ -60,4 +61,5 @@ function registerMainIPC() {
    * to Communicate asynchronously from the main process to renderer processes.
    */
   registerTitlebarIpc(appWindow!);
+  registerDbBridgeIpc();
 }

@@ -1,5 +1,6 @@
 import { Task } from "@common/Task";
 import { BaseTaskRepo, MinimalTask, TaskUpdater } from "./contracts/ITaskRepo";
+import dbContextApi from "@main/window/dbContextApi";
 
 
 const ROOT_TASK_ID = 1;
@@ -17,6 +18,34 @@ const defaultTask: Task = {
   isBlocked: false
 };
 
+const doSomething = () => { // WIP: Remove this
+  const createTaskTableSql = `
+    CREATE TABLE task (
+      id INTEGER PRIMARY KEY,
+      parent_id INTEGER,
+      name TEXT NOT NULL,
+      description TEXT,
+      is_expanded INTEGER NOT NULL CHECK (is_expanded IN (0, 1)),
+      is_removed INTEGER NOT NULL CHECK (is_removed IN (0, 1)),
+      is_completed INTEGER NOT NULL CHECK (is_completed IN (0, 1)),
+      is_blocked INTEGER NOT NULL CHECK (is_blocked IN (0, 1)),
+      FOREIGN KEY (parent_id) REFERENCES TASK(id)
+    );
+  `;
+
+  const insertRootTaskSql = `
+    INSERT INTO task (
+      parent_id, name, description, is_expanded, is_removed, is_completed, is_blocked
+    ) 
+    VALUES (
+      NULL, 'My First Task', '', 0, 0, 0, 0
+    );
+  `;
+
+  dbContextApi.execute(createTaskTableSql);
+  dbContextApi.execute(insertRootTaskSql);
+};
+
 export class InMemoryTaskRepo extends BaseTaskRepo {
   private readonly tasks = new Map<number, Task>();
   private maxId: number = ROOT_TASK_ID;
@@ -25,6 +54,7 @@ export class InMemoryTaskRepo extends BaseTaskRepo {
   constructor(){
     super()
     this.tasks.set(1, {...defaultTask});
+    doSomething(); // WIP
   }
   
   async addChild(parentId: number, childId: number) {

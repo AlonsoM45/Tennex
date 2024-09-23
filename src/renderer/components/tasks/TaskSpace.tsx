@@ -11,9 +11,6 @@ const style: CSSProperties = {
 };
 
 export const TaskSpace = ({children}: TaskSpaceProps) => {
-  useEffect(() => {
-    console.log("CHILDREN", children);
-  }, [children]); // WIP
   return (
     <div style={style}>
       {children.map(childTaskId => {

@@ -1,7 +1,6 @@
 import { Task } from "@common/Task";
 import { BaseTaskRepo, MinimalTask, TaskUpdater } from "./contracts/ITaskRepo";
 
-
 const ROOT_TASK_ID = 1;
 const NO_TASK_ID = -1;
 
@@ -51,20 +50,6 @@ export class InMemoryTaskRepo extends BaseTaskRepo {
     this.tasks.set(nextId, newTask);
     await this.addChild(parentId, nextId);
     return newTask;
-  }
-
-  async getPage(first: number, pageSize: number): Promise<Task[]> {
-    let page: Task[] = [];
-    for (let id = first; id <= this.maxId; id++) {
-      const task = await this.getTask(id);
-      if (task) {
-        page.push(task);
-      }
-      if (page.length === pageSize) {
-        break;
-      }
-    }
-    return page;
   }
 
   getTask(id: number): Promise<Task | null> {

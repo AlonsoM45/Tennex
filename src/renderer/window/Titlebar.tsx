@@ -56,7 +56,6 @@ const Titlebar: React.FC<Props> = (props) => {
           menusRef[activeMenuIndex.current].current &&
           !menusRef[activeMenuIndex.current].current?.contains(event.target as Node)
         ) {
-          // console.log('You clicked outside of me!');
           closeActiveMenu();
         }
       }
@@ -64,12 +63,10 @@ const Titlebar: React.FC<Props> = (props) => {
 
     if (activeMenuIndex != null) {
       document.addEventListener('mousedown', handleClickOutside);
-      // console.log('added event');
     }
 
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
-      // console.log('remove event');
     };
   }, [activeMenuIndex, menusRef]);
 
@@ -115,8 +112,6 @@ const Titlebar: React.FC<Props> = (props) => {
     if (action) {
       if (typeof c[action] === 'function') {
         c[action](value);
-      } else {
-        console.log(`action [${action}] is not available in titlebar context`);
       }
     }
   }

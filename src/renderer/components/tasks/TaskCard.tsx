@@ -55,7 +55,7 @@ export type ActualTaskProps = {
   isExpandable: boolean;
 };
 
-export const ItemTypes = { // WIP: Check this
+export const ItemTypes = { // TODO: Check this
   BOX: 'box',
 };
 
@@ -79,17 +79,17 @@ const ActualTaskCard = ({task, isExpandable}: ActualTaskProps) => {
     return undefined;
   }, {timeout: TIMEOUT_BEFORE_NAME_UPDATE}, [changeName, localName]);
 
-  const color = useMemo(() => { // WIP: Improve type
+  const color = useMemo(() => { // TODO: Improve type
     if (isSelected) {
-      return COLORS.violet; // WIP: Use theme.focused
+      return COLORS.violet; // TODO: Use theme.focused
     }
     if (isCompleted) {
-      return COLORS.green; // WIP: Use theme.done
+      return COLORS.green; // TODO: Use theme.done
     }
     if (isBlocked) {
-      return COLORS.red; // WIP: Use theme.blocked
+      return COLORS.red; // TODO: Use theme.blocked
     }
-    return COLORS.darkPurple; // WIP: Use theme.neutral
+    return COLORS.darkPurple; // TODO: Use theme.neutral
   }, [isSelected, isCompleted, isBlocked]);
 
   const [_dragProps, drag] = useDrag(
@@ -161,5 +161,5 @@ export const TaskCard = ({taskId}: TaskProps) => {
   }
 };
 
-export const Spinner = () => (<div>Loading...</div>); // WIP
-export const Oops = () => (<div>Oops...</div>); // WIP
+export const Spinner = () => (<div>Loading...</div>); // TODO
+export const Oops = () => (<div>Oops...</div>); // TODO

@@ -28,7 +28,7 @@ const styles: Record<string, CSSProperties> = {
 export type TaskHeaderProps = {
   task: Task;
   isExpandable: boolean;
-  color: string; // WIP: Improve type
+  color: string; // TODO: Improve type
 };
 
 export const TaskHeader = ({task, color, isExpandable}: TaskHeaderProps) => {
@@ -81,7 +81,7 @@ export const TaskHeader = ({task, color, isExpandable}: TaskHeaderProps) => {
     } else {
       completeTask();
     }
-  }, [task.isCompleted]); // WIP
+  }, [task.isCompleted, continueTask, completeTask]);
 
   return (
     <div
